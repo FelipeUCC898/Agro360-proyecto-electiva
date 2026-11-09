@@ -5,10 +5,10 @@
 </app-page-header>
 
 <div class="row g-3 mb-3">
-  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Vendido" [valor]="millones(vendido())" /></div>
-  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Cobrado" [valor]="millones(cobrado())" /></div>
-  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Por cobrar" [valor]="millones(porCobrar())" /></div>
-  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Vencido" [valor]="millones(vencido())" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Vendido" [valor]="millones(vendido())" icono="bi-bag-check" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Cobrado" [valor]="millones(cobrado())" icono="bi-cash-coin" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Por cobrar" [valor]="millones(porCobrar())" icono="bi-clock-history" tono="ambar" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Vencido" [valor]="millones(vencido())" icono="bi-exclamation-circle" tono="rojo" /></div>
 </div>
 
 <div class="card mb-3">
