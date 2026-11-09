@@ -93,3 +93,6 @@ body { background: #fff; }
 
 .progress { height: 10px; background: var(--agro-line); border-radius: 6px; }
 .progress-bar { background: var(--agro-green); }
+
+/* Acciones del encabezado: fila propia, oculta si no hay botones */
+.empty-hidden:empty { display: none; }
