@@ -108,3 +108,17 @@ body { background: #f1f5ee; }
 
 /* Acciones del encabezado: fila propia, oculta si no hay botones */
 .empty-hidden:empty { display: none; }
+
+/* Pantallas móviles: tarjetas, campos y botones */
+.tarjeta-movil {
+  background: #fff;
+  border: 1px solid var(--agro-line);
+  border-radius: 18px;
+  box-shadow: 0 10px 22px -18px rgba(18, 33, 26, 0.5);
+}
+.movil-marco .form-control,
+.movil-marco .form-select,
+.movil-marco .input-group-text { border-radius: 12px; border-color: var(--agro-line); background-color: #fff; }
+.movil-marco .input-group > :not(:first-child) { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.movil-marco .input-group > :not(:last-child) { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.movil-marco .btn { border-radius: 14px; }
