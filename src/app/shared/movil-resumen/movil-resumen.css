@@ -1,0 +1,7 @@
+.resumen-movil {
+  background: #fff;
+  border: 1px solid var(--agro-line);
+  border-left: 4px solid var(--agro-leaf);
+  box-shadow: 0 10px 22px -18px rgba(18, 33, 26, 0.5);
+}
+.titulo-resumen { font-size: 0.64rem; letter-spacing: 0.07em; color: var(--agro-green); }

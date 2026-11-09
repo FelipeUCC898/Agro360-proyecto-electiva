@@ -7,7 +7,8 @@ export interface FilaResumen {
 
 @Component({
   selector: 'app-movil-resumen',
-  templateUrl: './movil-resumen.html'
+  templateUrl: './movil-resumen.html',
+  styleUrl: './movil-resumen.css'
 })
 export class MovilResumen {
   titulo = input.required<string>();
