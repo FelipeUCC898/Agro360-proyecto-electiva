@@ -13,7 +13,8 @@ export const routes: Routes = [
       { path: 'lotes/:id/costos', title: 'Costo del lote · Agro360', loadComponent: () => import('./pages/web/costo-lote/costo-lote').then((m) => m.CostoLote) },
       { path: 'inventario', title: 'Inventario · Agro360', loadComponent: () => import('./pages/web/inventario/inventario').then((m) => m.Inventario) },
       { path: 'ventas', title: 'Ventas · Agro360', loadComponent: () => import('./pages/web/ventas/ventas').then((m) => m.Ventas) },
-      { path: 'alertas', title: 'Alertas · Agro360', loadComponent: () => import('./pages/web/alertas/alertas').then((m) => m.Alertas) }
+      { path: 'alertas', title: 'Alertas · Agro360', loadComponent: () => import('./pages/web/alertas/alertas').then((m) => m.Alertas) },
+      { path: 'reportes', title: 'Reportes · Agro360', loadComponent: () => import('./pages/web/reportes/reportes').then((m) => m.Reportes) }
     ]
   },
   {
