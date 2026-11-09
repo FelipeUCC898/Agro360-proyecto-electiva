@@ -1,31 +1,52 @@
 .app-shell {
   display: grid;
-  grid-template-columns: 210px minmax(0, 1fr);
+  grid-template-columns: 224px minmax(0, 1fr);
   min-height: 100vh;
 }
 
 .sidebar {
-  background: var(--agro-soft);
-  border-right: 1px solid var(--agro-line);
-  padding: 14px 10px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 12px;
+  color: #cfe0cb;
+  background: linear-gradient(180deg, #12211a 0%, #173321 100%);
 }
 
+.menu { flex: 1; }
+
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: 'Bricolage Grotesque', 'Segoe UI', sans-serif;
   font-weight: 800;
-  font-size: 1.15rem;
-  padding: 2px 8px 10px;
-  color: var(--agro-green);
+  font-size: 1.2rem;
+  color: #fff;
+  padding: 2px 6px 14px;
 }
-.brand span { color: var(--agro-ink); }
+.brand .num { color: var(--agro-leaf); }
+.logo {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--agro-leaf);
+  color: #12211a;
+  font-size: 1.1rem;
+}
 
 .grupo {
   font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--agro-muted);
-  padding: 14px 8px 4px;
+  color: #7f9a85;
+  padding: 16px 10px 4px;
 }
 
 .nav-link-agro {
@@ -33,40 +54,98 @@
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  padding: 5px 8px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  color: var(--agro-ink);
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: #cfe0cb;
   text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
 }
-a.nav-link-agro:hover { background: var(--agro-line); }
-.nav-link-agro.activo { background: var(--agro-green); color: #fff; font-weight: 600; }
-.nav-link-agro.deshabilitado { color: var(--agro-muted); cursor: default; }
-.proximamente { font-size: 0.58rem; color: var(--agro-muted); opacity: 0.85; }
+a.nav-link-agro:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.nav-link-agro.activo {
+  background: rgba(151, 188, 98, 0.2);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--agro-leaf);
+}
+.nav-link-agro.deshabilitado { color: #7f9a85; cursor: default; }
+.proximamente { font-size: 0.58rem; color: #7f9a85; opacity: 0.9; }
+
+.mas-modulos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 18px;
+  padding: 8px 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  background: transparent;
+  color: #cfe0cb;
+  font-size: 0.82rem;
+}
+.mas-modulos:hover { background: rgba(255, 255, 255, 0.06); }
+.mas-modulos .contador {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(151, 188, 98, 0.25);
+  color: var(--agro-leaf);
+}
+.mas-modulos[aria-expanded='true'] .bi-chevron-down { transform: rotate(180deg); }
+#mas-modulos { padding-top: 6px; }
+
+.finca-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 0.8rem;
+  color: #fff;
+}
+.finca-chip .bi { color: var(--agro-leaf); font-size: 1.1rem; }
+.finca-chip .ciclo { font-size: 0.68rem; color: #9fb7a4; }
+nav .finca-chip { margin-top: 18px; }
 
 .contenido {
   position: relative;
-  padding: 18px 28px 32px;
+  padding: 20px 30px 36px;
   min-width: 0;
 }
 
 .chip-usuario {
   position: absolute;
-  top: 16px;
-  right: 28px;
+  top: 18px;
+  right: 30px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  border: 1px solid var(--agro-ink);
+  gap: 8px;
+  border: 1px solid var(--agro-line);
   border-radius: 999px;
-  padding: 5px 14px;
-  font-size: 0.78rem;
+  padding: 4px 12px 4px 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
   background: #fff;
+  box-shadow: 0 6px 16px -10px rgba(18, 33, 26, 0.4);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--agro-green);
+  color: #fff;
+  font-size: 0.8rem;
 }
 
 @media (max-width: 991.98px) {
   .app-shell { grid-template-columns: minmax(0, 1fr); }
-  .sidebar { border-right: 0; border-bottom: 1px solid var(--agro-line); }
+  .sidebar { position: static; height: auto; padding: 12px 14px; }
   .contenido { padding: 16px; }
   .chip-usuario { display: none; }
 }
