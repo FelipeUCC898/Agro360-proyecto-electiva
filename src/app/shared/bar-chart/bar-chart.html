@@ -2,7 +2,7 @@
   <div class="grafico-area" [style.height.px]="alto()">
     <div class="eje">
       @for (m of marcas(); track m) {
-        <span class="marca" [style.bottom.%]="porcentaje(m)">{{ m }}</span>
+        <span class="marca" [style.bottom.%]="porcentaje(m)">{{ texto(m) }}</span>
       }
     </div>
     <div class="grupos">
@@ -11,7 +11,7 @@
           <div class="barras">
             @for (v of g.valores; track $index) {
               <div class="barra" [style.height.%]="porcentaje(v)" [style.background]="series()[$index].color" [title]="series()[$index].nombre + ': ' + v">
-                <span class="valor">{{ v }}</span>
+                <span class="valor">{{ texto(v) }}</span>
               </div>
             }
           </div>

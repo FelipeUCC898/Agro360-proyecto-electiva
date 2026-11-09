@@ -27,6 +27,11 @@ export class BarChart {
     return [0, 1, 2, 3, 4].map((i) => i * paso);
   });
 
+  // Coma decimal
+  texto(valor: number): string {
+    return valor.toString().replace('.', ',');
+  }
+
   porcentaje(valor: number): number {
     return (valor / this.maximo()) * 100;
   }
