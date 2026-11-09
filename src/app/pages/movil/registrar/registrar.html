@@ -12,9 +12,9 @@
 <div class="row g-2 mb-3">
   @for (a of acciones; track a.id) {
     <div class="col-6">
-      <button type="button" class="tile-accion w-100" [class.activa]="seleccionada() === a.id" [disabled]="!a.ruta"
+      <button type="button" class="tile-accion w-100" [class]="'tile-accion w-100 t-' + a.id" [class.activa]="seleccionada() === a.id" [disabled]="!a.ruta"
         (click)="seleccionada.set(a.id)">
-        <i class="bi fs-3" [class]="a.icono"></i>
+        <span class="icono"><i class="bi" [class]="a.icono"></i></span>
         <span class="fw-bold">{{ a.etiqueta }}</span>
         @if (!a.ruta) {
           <small class="proximamente">Próximamente</small>

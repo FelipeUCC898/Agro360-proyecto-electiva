@@ -6,12 +6,17 @@
     <nav class="movil-tabs">
       @for (p of pestanas; track p.ruta) {
         <a class="tab" [routerLink]="p.ruta" [class.activo]="activaRuta(p.activas)">
-          <i class="bi" [class]="p.icono"></i>
+          <span class="tab-icono">
+            <i class="bi" [class]="activaRuta(p.activas) ? p.iconoActivo : p.icono"></i>
+            @if (p.insignia) {
+              <span class="insignia">{{ p.insignia }}</span>
+            }
+          </span>
           <span>{{ p.etiqueta }}</span>
         </a>
       }
       <span class="tab deshabilitado" aria-disabled="true" title="Próximamente">
-        <i class="bi bi-person"></i>
+        <span class="tab-icono"><i class="bi bi-person"></i></span>
         <span>Perfil</span>
       </span>
     </nav>

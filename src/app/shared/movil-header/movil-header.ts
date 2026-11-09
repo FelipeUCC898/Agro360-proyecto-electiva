@@ -2,7 +2,8 @@ import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-movil-header',
-  templateUrl: './movil-header.html'
+  templateUrl: './movil-header.html',
+  styleUrl: './movil-header.css'
 })
 export class MovilHeader {
   titulo = input.required<string>();
