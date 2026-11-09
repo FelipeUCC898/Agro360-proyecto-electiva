@@ -9,10 +9,10 @@
   </ul>
 
   <div class="row g-3 mb-3">
-    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costo total" [valor]="millones(lote.costos)" /></div>
-    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Cosechado" [valor]="kg(lote.cosechaKg)" /></div>
-    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costo real por kg" [valor]="pesos(lote.costoKg)" /></div>
-    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Utilidad" [valor]="millones(lote.utilidad)" /></div>
+    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costo total" [valor]="millones(lote.costos)" icono="bi-receipt" tono="azul" /></div>
+    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Cosechado" [valor]="kg(lote.cosechaKg)" icono="bi-basket" tono="verde" /></div>
+    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costo real por kg" [valor]="pesos(lote.costoKg)" icono="bi-tag" tono="ambar" /></div>
+    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Utilidad" [valor]="millones(lote.utilidad)" icono="bi-graph-up-arrow" tono="verde" /></div>
   </div>
 
   <div class="row g-3">
