@@ -8,10 +8,10 @@
 </app-page-header>
 
 <div class="row g-3 mb-3">
-  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Productos" [valor]="resumen.productos.toString()" /></div>
-  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Valor en bodega" [valor]="millones(resumen.valorBodega)" /></div>
-  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Por vencer" [valor]="resumen.porVencer.toString()" /></div>
-  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Bajo mínimo" [valor]="resumen.bajoMinimo.toString()" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Productos" [valor]="resumen.productos.toString()" icono="bi-boxes" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Valor en bodega" [valor]="millones(resumen.valorBodega)" icono="bi-safe" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Por vencer" [valor]="resumen.porVencer.toString()" icono="bi-hourglass-split" tono="ambar" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Bajo mínimo" [valor]="resumen.bajoMinimo.toString()" icono="bi-exclamation-octagon" tono="rojo" /></div>
 </div>
 
 <div class="card mb-3">
