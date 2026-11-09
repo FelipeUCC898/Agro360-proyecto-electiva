@@ -1,9 +1,14 @@
-<div class="card h-100">
-  <div class="card-body py-3 px-3">
-    <div class="small text-secondary">{{ etiqueta() }}</div>
-    <div class="kpi-valor">{{ valor() }}</div>
-    @if (nota()) {
-      <div class="small text-secondary mt-1">{{ nota() }}</div>
+<div class="card kpi h-100" [class]="'tono-' + tono()">
+  <div class="card-body d-flex align-items-center gap-3 py-3 px-3">
+    @if (icono()) {
+      <span class="kpi-icono"><i class="bi" [class]="icono()"></i></span>
     }
+    <div class="min-w-0">
+      <div class="small text-secondary">{{ etiqueta() }}</div>
+      <div class="kpi-valor">{{ valor() }}</div>
+      @if (nota()) {
+        <div class="small text-secondary">{{ nota() }}</div>
+      }
+    </div>
   </div>
 </div>
