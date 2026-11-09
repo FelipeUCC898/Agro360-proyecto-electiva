@@ -27,7 +27,12 @@ h1, h2, h3, h4, h5, h6, .font-display {
   letter-spacing: -0.01em;
 }
 
-body { background: #fff; }
+body { background: #f1f5ee; }
+
+/* La pantalla entra suavemente al cambiar de ruta */
+.contenido > router-outlet + * { display: block; animation: entrar 0.35s ease both; }
+@keyframes entrar { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .contenido > router-outlet + * { animation: none; } }
 
 .btn-primary {
   --bs-btn-bg: var(--agro-green);
@@ -49,7 +54,13 @@ body { background: #fff; }
 }
 .btn { border-radius: 8px; font-weight: 600; }
 
-.card { border-radius: 10px; border-color: var(--agro-line); }
+.card {
+  border-radius: 14px;
+  border-color: var(--agro-line);
+  box-shadow: 0 1px 2px rgba(18, 33, 26, 0.04), 0 12px 26px -18px rgba(18, 33, 26, 0.22);
+}
+.btn-primary { box-shadow: 0 8px 16px -10px rgba(44, 95, 45, 0.8); }
+.table-hover > tbody > tr:hover > * { --bs-table-hover-bg: var(--agro-soft); }
 .card-title { font-size: 0.9rem; font-weight: 700; }
 
 .kpi-valor {
@@ -76,6 +87,7 @@ body { background: #fff; }
 .pill-aviso { background: var(--agro-warn-soft); color: var(--agro-warn); }
 .pill-peligro { background: var(--agro-bad-soft); color: var(--agro-bad); }
 .pill-neutro { background: var(--agro-soft); color: var(--agro-muted); border: 1px solid var(--agro-line); }
+.pill-info { background: #dcebf3; color: var(--agro-water); }
 
 .placeholder-box {
   display: flex;
@@ -83,9 +95,9 @@ body { background: #fff; }
   align-items: center;
   justify-content: center;
   gap: 4px;
-  border: 1px dashed var(--agro-muted);
-  border-radius: 8px;
-  background: var(--agro-soft);
+  border: 1px dashed #b9c9b5;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #eaf2e1 0%, #dcebf3 100%);
   color: var(--agro-muted);
   font-size: 0.72rem;
 }
