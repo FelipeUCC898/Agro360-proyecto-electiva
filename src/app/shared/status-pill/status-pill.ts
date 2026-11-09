@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 
-export type TonoPill = 'ok' | 'aviso' | 'peligro' | 'neutro';
+export type TonoPill = 'ok' | 'aviso' | 'peligro' | 'neutro' | 'info';
 
 @Component({
   selector: 'app-status-pill',
