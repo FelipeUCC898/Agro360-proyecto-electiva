@@ -7,8 +7,8 @@
         <h2 class="card-title mb-3">Alertas</h2>
         <div class="d-grid gap-3">
           @for (a of alertas; track a.id) {
-            <div class="border rounded-3 p-3 d-flex gap-3 align-items-start alerta" [class.atendida]="estaAtendida(a.id)">
-              <i class="bi fs-3 mt-1" [class]="iconos[a.tipo]"></i>
+            <div class="border rounded-3 p-3 d-flex gap-3 align-items-start alerta" [class]="'p-' + a.prioridad" [class.atendida]="estaAtendida(a.id)">
+              <span class="icono-alerta"><i class="bi" [class]="iconos[a.tipo]"></i></span>
               <div class="flex-grow-1">
                 <div class="fw-bold">{{ a.titulo }}</div>
                 <div class="text-secondary small">{{ a.detalle }}</div>
@@ -31,11 +31,11 @@
   </div>
 
   <div class="col-lg-4 d-grid gap-3 align-content-start">
-    <div class="card">
+    <div class="card tarjeta-clima">
       <div class="card-body">
         <h2 class="card-title mb-3">Clima de la finca</h2>
         <div class="d-flex align-items-center gap-3 mb-3">
-          <i class="bi bi-cloudy display-4"></i>
+          <i class="bi bi-cloud-sun display-4"></i>
           <div>
             <div class="h2 fw-bold mb-0">{{ clima.maxima }}° / {{ clima.minima }}°</div>
             <div class="text-secondary small">{{ clima.estado }}</div>

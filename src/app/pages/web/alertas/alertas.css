@@ -1,1 +1,28 @@
+.alerta { border-left-width: 4px !important; transition: box-shadow 0.15s ease; }
+.alerta:hover { box-shadow: 0 10px 22px -16px rgba(18, 33, 26, 0.45); }
+.alerta.p-urgente { border-left-color: var(--agro-bad) !important; }
+.alerta.p-aviso { border-left-color: var(--agro-warn) !important; }
+.alerta.p-info { border-left-color: var(--agro-leaf) !important; }
 .alerta.atendida { opacity: 0.55; background: var(--agro-soft); }
+
+.icono-alerta {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  background: var(--agro-leaf-soft);
+  color: var(--agro-green);
+}
+.p-urgente .icono-alerta { background: var(--agro-bad-soft); color: var(--agro-bad); }
+.p-aviso .icono-alerta { background: var(--agro-warn-soft); color: var(--agro-warn); }
+
+.tarjeta-clima {
+  background: linear-gradient(135deg, #2c5f2d 0%, #2f6f8f 100%);
+  color: #fff;
+  border: 0;
+}
+.tarjeta-clima .text-secondary { color: rgba(255, 255, 255, 0.75) !important; }
+.tarjeta-clima .card-title { color: #fff; }
