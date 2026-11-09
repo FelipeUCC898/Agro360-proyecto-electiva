@@ -1,0 +1,55 @@
+<div class="rounded-3 px-3 py-2 mt-3 small fw-bold d-flex align-items-center gap-2 aviso-sin-conexion">
+  <i class="bi bi-wifi-off"></i>
+  Sin conexión · {{ pendientes() }} registros guardados en el celular
+</div>
+
+<app-movil-header titulo="Registrar cosecha" subtitulo="Lote A · Papa" />
+
+<form class="d-grid gap-3" #formulario="ngForm" (ngSubmit)="guardar()">
+  <div>
+    <label class="form-label small text-secondary mb-1" for="cos-calidad">Calidad</label>
+    <select id="cos-calidad" name="calidad" class="form-select" [(ngModel)]="calidad">
+      <option>Primera</option>
+      <option>Segunda</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="cos-sacos">Sacos</label>
+    <div class="input-group">
+      <input id="cos-sacos" name="sacos" type="number" min="1" class="form-control" required [(ngModel)]="sacos" />
+      <span class="input-group-text">× {{ kgPorSaco }} kg</span>
+    </div>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="cos-total">Total</label>
+    <input id="cos-total" class="form-control" [value]="kg(totalKg)" readonly />
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="cos-merma">Merma</label>
+    <div class="input-group">
+      <input id="cos-merma" name="merma" type="number" min="0" class="form-control" [(ngModel)]="mermaKg" />
+      <span class="input-group-text">kg</span>
+      <input id="cos-motivo" name="motivo" class="form-control" aria-label="Motivo de la merma" [(ngModel)]="motivo" />
+    </div>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="cos-destino">Destino</label>
+    <select id="cos-destino" name="destino" class="form-select" [(ngModel)]="destino">
+      <option>Bodega 1</option>
+      <option>Bodega 2</option>
+    </select>
+  </div>
+
+  <app-movil-resumen titulo="Rendimiento del lote" [filas]="resumen" />
+
+  @if (guardado()) {
+    <div class="alert alert-success py-2 mb-0" role="status">Cosecha guardada en el celular.</div>
+  }
+
+  <button type="submit" class="btn btn-primary py-2" [disabled]="formulario.invalid">Guardar en el celular</button>
+  <div class="text-center small text-secondary">Se enviará cuando vuelva la señal</div>
+</form>
