@@ -1,0 +1,28 @@
+<div class="grafico">
+  <div class="grafico-area" [style.height.px]="alto()">
+    <div class="eje">
+      @for (m of marcas(); track m) {
+        <span class="marca" [style.bottom.%]="porcentaje(m)">{{ m }}</span>
+      }
+    </div>
+    <div class="grupos">
+      @for (g of grupos(); track g.etiqueta) {
+        <div class="grupo">
+          <div class="barras">
+            @for (v of g.valores; track $index) {
+              <div class="barra" [style.height.%]="porcentaje(v)" [style.background]="series()[$index].color" [title]="series()[$index].nombre + ': ' + v">
+                <span class="valor">{{ v }}</span>
+              </div>
+            }
+          </div>
+          <div class="etiqueta">{{ g.etiqueta }}</div>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="leyenda">
+    @for (s of series(); track s.nombre) {
+      <span><i [style.background]="s.color"></i>{{ s.nombre }}</span>
+    }
+  </div>
+</div>

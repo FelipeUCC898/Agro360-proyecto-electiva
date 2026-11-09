@@ -1,0 +1,34 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="brand">AGRO<span>360</span></div>
+      <button class="btn btn-sm btn-outline-dark d-lg-none" type="button" data-bs-toggle="collapse"
+        data-bs-target="#menu-lateral" aria-controls="menu-lateral" aria-label="Abrir menú">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+
+    <nav id="menu-lateral" class="collapse d-lg-block">
+      @for (grupo of menu; track $index) {
+        @if (grupo.titulo) {
+          <div class="grupo">{{ grupo.titulo }}</div>
+        }
+        @for (item of grupo.items; track item.etiqueta) {
+          @if (item.ruta) {
+            <a class="nav-link-agro" [routerLink]="item.ruta" routerLinkActive="activo">{{ item.etiqueta }}</a>
+          } @else {
+            <span class="nav-link-agro deshabilitado" aria-disabled="true">
+              {{ item.etiqueta }}
+              <small class="proximamente">Próximamente</small>
+            </span>
+          }
+        }
+      }
+    </nav>
+  </aside>
+
+  <main class="contenido">
+    <span class="chip-usuario"><i class="bi bi-person"></i> Dueño <i class="bi bi-chevron-down"></i></span>
+    <router-outlet />
+  </main>
+</div>
