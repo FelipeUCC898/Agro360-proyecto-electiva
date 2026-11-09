@@ -8,7 +8,8 @@ import { PlaceholderBox } from '../../../shared/placeholder-box/placeholder-box'
 @Component({
   selector: 'app-movil-lotes',
   imports: [RouterLink, MovilHeader, PlaceholderBox],
-  templateUrl: './lotes.html'
+  templateUrl: './lotes.html',
+  styleUrl: './lotes.css'
 })
 export class MovilLotes {
   readonly finca = inject(FincaService);
