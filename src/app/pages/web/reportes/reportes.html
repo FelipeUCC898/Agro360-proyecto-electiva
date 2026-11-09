@@ -1,0 +1,135 @@
+<app-page-header titulo="Reportes" [subtitulo]="finca.nombre + ' · Ciclo ' + finca.ciclo">
+  <select id="reporte-lote" class="form-select selector" aria-label="Filtrar por lote" [ngModel]="filtro()" (ngModelChange)="filtro.set($event)">
+    <option value="todos">Todos los lotes</option>
+    @for (f of todas; track f.id) {
+      <option [value]="f.id">{{ f.lote }} · {{ f.cultivo.split(' ')[0] }}</option>
+    }
+  </select>
+  <button type="button" class="btn btn-primary" (click)="exportar()">
+    <i class="bi bi-download"></i> Exportar CSV
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Ingresos" [valor]="millones(totales().ingresos)" icono="bi-cash-stack" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costos" [valor]="millones(totales().costos)" icono="bi-receipt" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Utilidad" [valor]="millones(totales().utilidad)" [nota]="'Margen ' + totales().margen + ' %'" icono="bi-graph-up-arrow" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Retorno por hectárea" [valor]="millones(totales().retornoHa)" [nota]="totales().area + ' ha'" icono="bi-bullseye" tono="ambar" /></div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body pb-0">
+    <h2 class="card-title">Rentabilidad por lote</h2>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Lote</th>
+          <th>Cultivo</th>
+          <th class="text-end">Ha</th>
+          <th class="text-end">Cosecha</th>
+          <th class="text-end">Ingresos</th>
+          <th class="text-end">Costos</th>
+          <th class="text-end">Utilidad</th>
+          <th class="text-end">Margen</th>
+          <th class="text-end">Costo / kg</th>
+          <th class="text-end">Retorno / ha</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (f of filas(); track f.id) {
+          <tr>
+            <td class="fw-semibold">{{ f.lote }}</td>
+            <td>{{ f.cultivo }}</td>
+            <td class="text-end">{{ f.areaHa }}</td>
+            <td class="text-end">{{ kg(f.kg) }}</td>
+            <td class="text-end">{{ millones(f.ingresos) }}</td>
+            <td class="text-end">{{ millones(f.costos) }}</td>
+            <td class="text-end fw-semibold">{{ millones(f.utilidad) }}</td>
+            <td class="text-end"><app-status-pill [texto]="f.margen + ' %'" [tono]="f.margen < 20 ? 'peligro' : f.margen >= 30 ? 'ok' : 'aviso'" /></td>
+            <td class="text-end">{{ pesos(f.costoKg) }}</td>
+            <td class="text-end">{{ millones(f.retornoHa) }}</td>
+          </tr>
+        }
+      </tbody>
+      <tfoot>
+        <tr class="totales">
+          <td colspan="2">Total</td>
+          <td class="text-end">{{ totales().area }}</td>
+          <td class="text-end">{{ kg(totales().kg) }}</td>
+          <td class="text-end">{{ millones(totales().ingresos) }}</td>
+          <td class="text-end">{{ millones(totales().costos) }}</td>
+          <td class="text-end">{{ millones(totales().utilidad) }}</td>
+          <td class="text-end">{{ totales().margen }} %</td>
+          <td class="text-end">{{ pesos(totales().costoKg) }}</td>
+          <td class="text-end">{{ millones(totales().retornoHa) }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Costo por kg frente al ciclo anterior</h2>
+        @for (c of comparativo(); track c.lote) {
+          <div class="d-flex align-items-center gap-3 py-2 border-bottom fila">
+            <span class="fw-semibold flex-grow-1">{{ c.lote }}</span>
+            <span class="text-secondary">{{ pesos(c.costoKgAnterior) }}</span>
+            <i class="bi bi-arrow-right text-secondary"></i>
+            <strong>{{ pesos(c.costoKgActual) }}</strong>
+            <app-status-pill [texto]="(c.variacion > 0 ? '+' : '') + c.variacion.toString().replace('.', ',') + ' %'" [tono]="c.variacion <= 0 ? 'ok' : 'peligro'" />
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Distribución del costo</h2>
+        @for (r of rubros(); track r.nombre) {
+          <div class="mb-2">
+            <div class="d-flex justify-content-between small">
+              <span><i class="muestra" [style.background]="r.color"></i>{{ r.nombre }}</span>
+              <span class="text-secondary">{{ millones(r.valor) }} · <strong class="text-body">{{ porcentaje(r.valor, totalRubros()).toFixed(0) }} %</strong></span>
+            </div>
+            <div class="progress mt-1" role="progressbar" [attr.aria-valuenow]="porcentaje(r.valor, totalRubros())" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" [style.background]="r.color" [style.width.%]="porcentaje(r.valor, totalRubros())"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title mb-3">Ventas y cartera</h2>
+    @if (cartera().vendido > 0) {
+      <div class="row g-3 text-center mb-3">
+        <div class="col-6 col-md-3"><div class="small text-secondary">Vendido</div><div class="h5 fw-bold mb-0">{{ millones(cartera().vendido) }}</div></div>
+        <div class="col-6 col-md-3"><div class="small text-secondary">Cobrado</div><div class="h5 fw-bold mb-0 text-success">{{ millones(cartera().cobrado) }}</div></div>
+        <div class="col-6 col-md-3"><div class="small text-secondary">Por cobrar</div><div class="h5 fw-bold mb-0">{{ millones(cartera().porCobrar) }}</div></div>
+        <div class="col-6 col-md-3"><div class="small text-secondary">Vencido</div><div class="h5 fw-bold mb-0 text-danger">{{ millones(cartera().vencido) }}</div></div>
+      </div>
+      <div class="progress-stacked" role="img" aria-label="Estado de la cartera">
+        <div class="progress" [style.width.%]="porcentaje(cartera().cobrado, cartera().vendido)"><div class="progress-bar bg-success"></div></div>
+        <div class="progress" [style.width.%]="porcentaje(cartera().porCobrar - cartera().vencido, cartera().vendido)"><div class="progress-bar bg-warning"></div></div>
+        <div class="progress" [style.width.%]="porcentaje(cartera().vencido, cartera().vendido)"><div class="progress-bar bg-danger"></div></div>
+      </div>
+      <div class="d-flex gap-3 small text-secondary mt-2 flex-wrap">
+        <span><i class="muestra bg-success"></i>Cobrado</span>
+        <span><i class="muestra bg-warning"></i>Por cobrar</span>
+        <span><i class="muestra bg-danger"></i>Vencido</span>
+      </div>
+    } @else {
+      <div class="text-secondary">Este lote todavía no tiene ventas registradas en el ciclo.</div>
+    }
+  </div>
+</div>
