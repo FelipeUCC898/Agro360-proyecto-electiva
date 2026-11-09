@@ -1,0 +1,23 @@
+<app-movil-header titulo="Mis lotes" [subtitulo]="finca.nombre" />
+
+<div class="d-grid gap-3">
+  @for (l of lotes; track l.id) {
+    <div class="border rounded-4 p-3">
+      <div class="d-flex gap-3 mb-3">
+        <div style="width: 110px; flex-shrink: 0">
+          <app-placeholder-box texto="foto" [alto]="100" />
+        </div>
+        <div>
+          <div class="h5 fw-bold mb-1">{{ l.nombre }}</div>
+          <div class="small text-secondary mb-2">{{ l.cultivo.split(' ')[0] }} · {{ l.areaHa }} ha</div>
+          <div class="small text-secondary">Margen</div>
+          <div class="h5 fw-bold mb-0">{{ l.margen }} %</div>
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <a class="btn btn-primary btn-sm flex-fill" [routerLink]="['/lotes', l.id, 'costos']">Ver costos</a>
+        <a class="btn btn-outline-dark btn-sm flex-fill" routerLink="/movil/labor">Registrar labor</a>
+      </div>
+    </div>
+  }
+</div>
