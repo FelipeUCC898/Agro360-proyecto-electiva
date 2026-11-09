@@ -1,0 +1,2 @@
+.aviso-lote { background: var(--agro-warn-soft); }
+.fila-alerta:last-child { border-bottom: 0 !important; }
