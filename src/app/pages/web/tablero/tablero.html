@@ -1,0 +1,74 @@
+<app-page-header titulo="Tablero de la finca" [subtitulo]="finca.nombre + ' · Ciclo actual'" />
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Ingresos" [valor]="millones(ingresos)" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costos" [valor]="millones(costos)" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Utilidad" [valor]="millones(utilidad)" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Margen" [valor]="margen + ' %'" /></div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-7">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Ingresos, costos y utilidad por lote</h2>
+        <app-bar-chart [series]="series" [grupos]="grupos" [maximo]="40" />
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card h-100">
+      <div class="card-body d-flex flex-column">
+        <h2 class="card-title mb-3">Margen por lote</h2>
+        @for (l of lotes; track l.id) {
+          <div class="mb-3">
+            <div class="mb-1">{{ l.nombre }} · {{ l.cultivo.split(' ')[0] }}</div>
+            <div class="d-flex align-items-center gap-3">
+              <div class="progress flex-grow-1" role="progressbar" [attr.aria-valuenow]="l.margen" aria-valuemin="0" aria-valuemax="50">
+                <div class="progress-bar" [style.width.%]="l.margen * 2"></div>
+              </div>
+              <strong class="text-end" style="min-width: 42px">{{ l.margen }} %</strong>
+            </div>
+          </div>
+        }
+        <div class="rounded-3 p-3 mt-auto aviso-lote">
+          <div class="fw-bold">El Lote B deja poca utilidad.</div>
+          <div class="text-secondary small mb-2">El Lote A lo está subsidiando.</div>
+          <a class="btn btn-sm btn-outline-dark" routerLink="/lotes">Ver detalle</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-2">Alertas activas</h2>
+        @for (a of alertas; track a.id) {
+          <div class="d-flex align-items-center gap-3 py-3 border-bottom fila-alerta">
+            <i class="bi fs-5" [class]="iconos[a.tipo]"></i>
+            <span>{{ a.titulo }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Ahorro estimado por recurso</h2>
+        @for (a of ahorros; track a.recurso) {
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <span style="width: 110px">{{ a.recurso }}</span>
+            <div class="progress flex-grow-1" role="progressbar" [attr.aria-valuenow]="a.porcentaje" aria-valuemin="0" aria-valuemax="20">
+              <div class="progress-bar" style="background: var(--agro-leaf)" [style.width.%]="a.porcentaje * 5"></div>
+            </div>
+            <strong class="text-end" style="min-width: 48px">-{{ a.porcentaje }} %</strong>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
