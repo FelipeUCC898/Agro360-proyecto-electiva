@@ -14,7 +14,13 @@ export const MENU: MenuGrupo[] = [
   { titulo: 'Producción', items: [{ etiqueta: 'Lotes', ruta: '/lotes' }] },
   { titulo: 'Recursos y operación', items: [{ etiqueta: 'Inventario', ruta: '/inventario' }] },
   { titulo: 'Comercial y financiero', items: [{ etiqueta: 'Ventas', ruta: '/ventas' }] },
-  { titulo: 'Inteligencia', items: [{ etiqueta: 'Alertas', ruta: '/alertas' }] }
+  {
+    titulo: 'Inteligencia',
+    items: [
+      { etiqueta: 'Alertas', ruta: '/alertas' },
+      { etiqueta: 'Reportes', ruta: '/reportes' }
+    ]
+  }
 ];
 
 // Módulos que todavía no tienen pantalla: quedan recogidos en "Más módulos"
@@ -30,6 +36,5 @@ export const MENU_PROXIMAMENTE: MenuItem[] = [
   { etiqueta: 'Clientes' },
   { etiqueta: 'Finanzas' },
   { etiqueta: 'Mapas' },
-  { etiqueta: 'Clima' },
-  { etiqueta: 'Reportes' }
+  { etiqueta: 'Clima' }
 ];
