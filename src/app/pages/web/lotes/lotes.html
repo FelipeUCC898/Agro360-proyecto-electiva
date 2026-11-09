@@ -19,9 +19,12 @@
           <app-placeholder-box texto="foto / mapa del lote" [alto]="160" />
           <h2 class="h5 fw-bold mt-3 mb-1">{{ l.nombre }}</h2>
           <div class="text-secondary mb-2">{{ l.cultivo }} · {{ l.areaHa }} ha</div>
-          <div class="mb-3"><app-status-pill [texto]="l.estado" tono="neutro" /></div>
+          <div class="mb-3"><app-status-pill [texto]="l.estado" [tono]="l.estado === 'Cosechado' ? 'ok' : 'info'" /></div>
           <div class="row text-start border-top pt-3 mb-3 g-2">
-            <div class="col-4"><div class="small text-secondary">Margen</div><div class="h5 fw-bold mb-0">{{ l.margen }} %</div></div>
+            <div class="col-4">
+              <div class="small text-secondary">Margen</div>
+              <div class="h5 fw-bold mb-0" [class.margen-malo]="l.margen < 20" [class.margen-bueno]="l.margen >= 30">{{ l.margen }} %</div>
+            </div>
             <div class="col-4"><div class="small text-secondary">Costo / kg</div><div class="h5 fw-bold mb-0">{{ l.costoKg ? pesos(l.costoKg) : '—' }}</div></div>
             <div class="col-4"><div class="small text-secondary">Ciclo</div><div class="h6 fw-bold mb-0 pt-1">{{ l.ciclo }}</div></div>
           </div>

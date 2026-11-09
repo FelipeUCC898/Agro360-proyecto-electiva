@@ -1,1 +1,8 @@
 .buscador { max-width: 300px; }
+.buscador .form-control, .buscador .input-group-text { box-shadow: 0 6px 16px -12px rgba(18, 33, 26, 0.5); }
+
+.card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 18px 30px -18px rgba(18, 33, 26, 0.4); }
+
+.margen-bueno { color: #2e7d32; }
+.margen-malo { color: var(--agro-bad); }
