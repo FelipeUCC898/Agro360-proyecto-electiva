@@ -1,0 +1,24 @@
+<app-movil-header titulo="Alertas de hoy" [subtitulo]="finca.nombre" />
+
+<div class="d-grid gap-2 mb-3">
+  @for (a of alertas; track a.titulo) {
+    <div class="border rounded-4 p-3 d-flex align-items-center gap-3 alerta" [class.destacada]="a.destacada">
+      <i class="bi fs-4" [class]="iconos[a.tipo]"></i>
+      <div>
+        <div class="fw-bold">{{ a.titulo }}</div>
+        <div class="small text-secondary">{{ a.detalle }}</div>
+      </div>
+    </div>
+  }
+</div>
+
+<div class="border rounded-4 p-3">
+  <div class="fw-bold mb-2">Clima hoy</div>
+  <div class="d-flex align-items-center gap-3">
+    <i class="bi bi-cloudy display-5"></i>
+    <div>
+      <div class="h4 fw-bold mb-0">{{ clima.maxima }}° / {{ clima.minima }}°</div>
+      <div class="small text-secondary">Lluvia mañana: {{ clima.lluviaManana }} %</div>
+    </div>
+  </div>
+</div>

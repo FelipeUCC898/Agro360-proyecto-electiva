@@ -1,9 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ICONO_ALERTA } from '../../../core/models/alerta';
+import { FincaService } from '../../../core/services/finca.service';
+import { MovilService } from '../../../core/services/movil.service';
 import { MovilHeader } from '../../../shared/movil-header/movil-header';
 
 @Component({
   selector: 'app-movil-alertas',
   imports: [MovilHeader],
-  template: '<app-movil-header titulo="Alertas de hoy" subtitulo="Finca La Esperanza" />'
+  templateUrl: './alertas.html',
+  styleUrl: './alertas.css'
 })
-export class MovilAlertas {}
+export class MovilAlertas {
+  private readonly datos = inject(MovilService);
+
+  readonly finca = inject(FincaService);
+  readonly alertas = this.datos.alertas;
+  readonly clima = this.datos.clima;
+  readonly iconos = ICONO_ALERTA;
+}

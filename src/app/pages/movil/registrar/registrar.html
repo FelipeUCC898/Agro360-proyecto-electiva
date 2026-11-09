@@ -1,0 +1,32 @@
+<app-movil-header titulo="¿Qué hiciste hoy?" [subtitulo]="finca.nombre" />
+
+<div class="mb-3">
+  <label class="form-label small text-secondary mb-1" for="reg-lote">Lote</label>
+  <select id="reg-lote" class="form-select" [(ngModel)]="loteId">
+    @for (l of lotes; track l.id) {
+      <option [value]="l.id">{{ l.nombre }} · {{ l.cultivo.split(' ')[0] }}</option>
+    }
+  </select>
+</div>
+
+<div class="row g-2 mb-3">
+  @for (a of acciones; track a.id) {
+    <div class="col-6">
+      <button type="button" class="tile-accion w-100" [class.activa]="seleccionada() === a.id" [disabled]="!a.ruta"
+        (click)="seleccionada.set(a.id)">
+        <i class="bi fs-3" [class]="a.icono"></i>
+        <span class="fw-bold">{{ a.etiqueta }}</span>
+        @if (!a.ruta) {
+          <small class="proximamente">Próximamente</small>
+        }
+      </button>
+    </div>
+  }
+</div>
+
+<div class="mb-3">
+  <label class="form-label small text-secondary mb-1" for="reg-fecha">Fecha</label>
+  <input id="reg-fecha" class="form-control" value="Hoy" readonly />
+</div>
+
+<button type="button" class="btn btn-primary w-100 py-2" (click)="continuar()">Continuar</button>

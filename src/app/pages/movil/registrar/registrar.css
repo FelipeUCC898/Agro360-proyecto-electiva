@@ -1,0 +1,15 @@
+.tile-accion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 118px;
+  border: 1px solid var(--agro-line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--agro-ink);
+}
+.tile-accion.activa { background: var(--agro-leaf-soft); border-color: var(--agro-leaf); color: var(--agro-green); }
+.tile-accion:disabled { color: var(--agro-muted); opacity: 0.6; }
+.proximamente { font-size: 0.62rem; }
