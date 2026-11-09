@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { MENU } from '../../core/menu';
+import { MENU, MENU_PROXIMAMENTE } from '../../core/menu';
+import { FincaService } from '../../core/services/finca.service';
 
 @Component({
   selector: 'app-web-layout',
@@ -10,4 +11,6 @@ import { MENU } from '../../core/menu';
 })
 export class WebLayout {
   readonly menu = MENU;
+  readonly proximamente = MENU_PROXIMAMENTE;
+  readonly finca = inject(FincaService);
 }
