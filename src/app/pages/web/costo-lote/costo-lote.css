@@ -1,0 +1,11 @@
+.progress-stacked { height: 26px; border-radius: 6px; }
+.progress-stacked .progress { height: 100%; border-radius: 0; }
+.muestra { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.rubro { font-size: 0.85rem; }
+.valor-m { min-width: 64px; }
+.valor-kg { min-width: 84px; }
+.formula { background: var(--agro-soft); }
+.fecha { min-width: 48px; }
+.nav-pills .nav-link { border: 1px solid var(--agro-line); font-size: 0.8rem; padding: 0.35rem 0.9rem; color: var(--agro-ink); }
+.nav-pills .nav-link.active { background: var(--agro-green); border-color: var(--agro-green); color: #fff; }
+.nav-pills .nav-link.disabled { color: var(--agro-muted); }

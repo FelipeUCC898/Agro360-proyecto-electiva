@@ -1,0 +1,71 @@
+@if (lote && costo) {
+  <app-page-header [titulo]="lote.nombre + ' · ' + lote.cultivo" [subtitulo]="lote.areaHa + ' ha · ' + (lote.estado === 'Cosechado' ? 'ciclo cerrado' : 'en producción')" />
+
+  <ul class="nav nav-pills gap-1 mb-3">
+    <li class="nav-item"><span class="nav-link active">Costos</span></li>
+    @for (p of pestanas; track p) {
+      <li class="nav-item"><span class="nav-link disabled" title="Próximamente">{{ p }}</span></li>
+    }
+  </ul>
+
+  <div class="row g-3 mb-3">
+    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costo total" [valor]="millones(lote.costos)" /></div>
+    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Cosechado" [valor]="kg(lote.cosechaKg)" /></div>
+    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costo real por kg" [valor]="pesos(lote.costoKg)" /></div>
+    <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Utilidad" [valor]="millones(lote.utilidad)" /></div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="card-title mb-3">¿De dónde sale cada peso?</h2>
+
+          <div class="progress-stacked mb-4" role="img" aria-label="Composición del costo del lote">
+            @for (r of costo.rubros; track r.nombre) {
+              <div class="progress" role="progressbar" [style.width.%]="(r.valor / lote.costos) * 100">
+                <div class="progress-bar" [style.background]="r.color"></div>
+              </div>
+            }
+          </div>
+
+          @for (r of costo.rubros; track r.nombre) {
+            <div class="d-flex align-items-center gap-2 py-2 rubro">
+              <span class="muestra" [style.background]="r.color"></span>
+              <span class="flex-grow-1">{{ r.nombre }}</span>
+              <span class="text-secondary text-end valor-m">{{ millones(r.valor) }}</span>
+              <strong class="text-end valor-kg">{{ pesos(porKg(r.valor)) }} /kg</strong>
+            </div>
+          }
+
+          <div class="rounded-3 p-3 mt-3 formula">
+            <div class="small text-secondary">Costo total del lote ÷ kg cosechados</div>
+            <div class="fw-bold">{{ pesos(totalPesos) }} ÷ {{ kg(lote.cosechaKg) }} = {{ pesos(lote.costoKg) }} por kg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column">
+          <h2 class="card-title mb-2">Últimas labores</h2>
+          @for (l of costo.labores; track l.fecha + l.detalle) {
+            <div class="d-flex align-items-center gap-3 py-3 border-bottom">
+              <span class="text-secondary small fecha">{{ l.fecha }}</span>
+              <span class="flex-grow-1">{{ l.detalle }}</span>
+              <strong>{{ pesos(l.valor) }}</strong>
+            </div>
+          }
+          <div class="rounded-3 p-3 mt-auto formula">
+            <div class="fw-bold small">Frente al ciclo anterior</div>
+            <div class="text-secondary small">Costo por kg: {{ pesos(costo.costoKgAnterior) }} → {{ pesos(lote.costoKg) }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <app-page-header titulo="Lote no encontrado" />
+  <a class="btn btn-outline-dark" routerLink="/lotes">Volver a lotes</a>
+}
