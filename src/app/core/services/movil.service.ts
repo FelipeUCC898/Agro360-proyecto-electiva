@@ -18,7 +18,7 @@ export interface AccionRegistro {
 @Injectable({ providedIn: 'root' })
 export class MovilService {
   readonly acciones: AccionRegistro[] = [
-    { id: 'riego', etiqueta: 'Riego', icono: 'bi-droplet' },
+    { id: 'riego', etiqueta: 'Riego', icono: 'bi-droplet', ruta: '/movil/riego' },
     { id: 'fertilizacion', etiqueta: 'Fertilización', icono: 'bi-flower1', ruta: '/movil/labor' },
     { id: 'plagas', etiqueta: 'Plagas', icono: 'bi-bug', ruta: '/movil/plagas' },
     { id: 'jornal', etiqueta: 'Jornal', icono: 'bi-person' },
