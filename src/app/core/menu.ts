@@ -28,7 +28,8 @@ export const MENU: MenuGrupo[] = [
   {
     titulo: 'Comercial y financiero',
     items: [
-      { etiqueta: 'Ventas', ruta: '/ventas' }
+      { etiqueta: 'Ventas', ruta: '/ventas' },
+      { etiqueta: 'Clientes', ruta: '/clientes' }
     ]
   },
   {
@@ -49,7 +50,6 @@ export const MENU_PROXIMAMENTE: MenuItem[] = [
   { etiqueta: 'Plagas' },
   { etiqueta: 'Trabajadores' },
   { etiqueta: 'Maquinaria' },
-  { etiqueta: 'Clientes' },
   { etiqueta: 'Finanzas' },
   { etiqueta: 'Mapas' }
 ];
