@@ -1,0 +1,113 @@
+<app-page-header titulo="Cultivos" [subtitulo]="cultivos().length + ' cultivos en el catálogo'">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-cultivo">
+    <i class="bi bi-plus-lg"></i> Nuevo cultivo
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Cultivos activos" [valor]="activos().toString()" icono="bi-flower2" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Ciclo promedio" [valor]="cicloPromedio() + ' días'" icono="bi-calendar-range" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Rendimiento promedio" [valor]="kg(rendimientoPromedio()) + '/ha'" icono="bi-speedometer2" tono="ambar" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Lotes sembrados" [valor]="lotesSembrados().toString()" icono="bi-grid-3x3-gap" tono="verde" /></div>
+</div>
+
+<div class="card mb-3">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Cultivo</th>
+          <th>Variedad</th>
+          <th>Tipo</th>
+          <th class="text-end">Ciclo (días)</th>
+          <th class="text-end">Esperado (kg/ha)</th>
+          <th class="text-end">Real (kg/ha)</th>
+          <th>Lotes</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of cultivos(); track c.id) {
+          <tr>
+            <td class="fw-semibold">{{ c.nombre }}</td>
+            <td>{{ c.variedad }}</td>
+            <td>{{ c.tipo }}</td>
+            <td class="text-end">{{ c.cicloDias }}</td>
+            <td class="text-end">{{ kg(c.rendimientoKgHa).replace(' kg', '') }}</td>
+            <td class="text-end">
+              @if (rendimientoReal(c) !== null) {
+                <app-status-pill [texto]="kg(rendimientoReal(c) ?? 0).replace(' kg', '')" [tono]="tonoRendimiento(c)" />
+              } @else {
+                —
+              }
+            </td>
+            <td>{{ nombresLotes(c) }}</td>
+            <td><app-status-pill [texto]="c.estado" [tono]="c.estado === 'Activo' ? 'ok' : 'neutro'" /></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title mb-3">Calendario del ciclo</h2>
+    @for (e of calendario; track e.loteId) {
+      <div class="py-3 border-bottom etapa">
+        <div class="d-flex flex-wrap justify-content-between gap-2 mb-2">
+          <span class="fw-semibold">{{ nombreLote(e.loteId) }} · {{ cultivoDelLote(e.loteId) }}</span>
+          <span class="text-secondary small">Siembra {{ e.siembra }} · Cosecha {{ e.cosecha }}{{ e.estimada ? ' (estimada)' : '' }}</span>
+        </div>
+        <div class="progress" role="progressbar" [attr.aria-valuenow]="e.avance" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar" [style.width.%]="e.avance"></div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<div class="modal fade" id="modal-cultivo" tabindex="-1" aria-labelledby="titulo-cultivo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formulario="ngForm" (ngSubmit)="guardar()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-cultivo">Nuevo cultivo</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="cul-nombre">Cultivo</label>
+            <input id="cul-nombre" name="nombre" class="form-control" required [(ngModel)]="nombre" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="cul-variedad">Variedad</label>
+            <input id="cul-variedad" name="variedad" class="form-control" required [(ngModel)]="variedad" />
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="cul-tipo">Tipo</label>
+          <select id="cul-tipo" name="tipo" class="form-select" [(ngModel)]="tipo">
+            @for (t of tipos; track t) {
+              <option [value]="t">{{ t }}</option>
+            }
+          </select>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="cul-ciclo">Ciclo (días)</label>
+            <input id="cul-ciclo" name="ciclo" type="number" min="1" class="form-control" required [(ngModel)]="cicloDias" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="cul-rendimiento">Rendimiento (kg/ha)</label>
+            <input id="cul-rendimiento" name="rendimiento" type="number" min="1" class="form-control" required [(ngModel)]="rendimiento" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formulario.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
