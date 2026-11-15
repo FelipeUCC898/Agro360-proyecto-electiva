@@ -1,0 +1,86 @@
+<app-page-header titulo="Fincas" [subtitulo]="fincas().length + ' fincas · ' + hectareas() + ' ha'">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-finca" (click)="abrirNueva()">
+    <i class="bi bi-plus-lg"></i> Nueva finca
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Fincas activas" [valor]="activas().toString()" icono="bi-houses" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Hectáreas totales" [valor]="hectareas().toString()" icono="bi-rulers" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Lotes registrados" [valor]="lotesDe(fincas()[0]).toString()" icono="bi-grid-3x3-gap" tono="ambar" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Ciclo actual" [valor]="servicio.ciclo" icono="bi-calendar3" tono="verde" /></div>
+</div>
+
+<div class="row g-3">
+  @for (f of fincas(); track f.id) {
+    <div class="col-md-6 col-xl-4">
+      <div class="card h-100 finca" [class.actual]="servicio.seleccionadaId() === f.id">
+        <div class="card-body d-flex flex-column">
+          <app-placeholder-box texto="foto de la finca" [alto]="140" />
+          <div class="d-flex justify-content-between align-items-start mt-3">
+            <h2 class="h5 fw-bold mb-1">{{ f.nombre }}</h2>
+            @if (servicio.seleccionadaId() === f.id) {
+              <span class="badge text-bg-success">Finca actual</span>
+            }
+          </div>
+          <div class="text-secondary mb-2"><i class="bi bi-geo-alt"></i> {{ f.municipio }}, {{ f.departamento }}</div>
+          <div class="mb-3"><app-status-pill [texto]="f.estado" [tono]="f.estado === 'Activa' ? 'ok' : 'neutro'" /></div>
+          <div class="row border-top pt-3 mb-3 g-2">
+            <div class="col-3"><div class="small text-secondary">Hectáreas</div><div class="h5 fw-bold mb-0">{{ f.areaHa }}</div></div>
+            <div class="col-3"><div class="small text-secondary">Lotes</div><div class="h5 fw-bold mb-0">{{ lotesDe(f) || '—' }}</div></div>
+            <div class="col-6"><div class="small text-secondary">Responsable</div><div class="fw-semibold pt-1">{{ f.responsable }}</div></div>
+          </div>
+          @if (lotesDe(f) === 0) {
+            <div class="small text-secondary mb-2">Sin lotes todavía</div>
+          }
+          <div class="d-flex flex-wrap gap-2 mt-auto">
+            <a class="btn btn-primary btn-sm" routerLink="/lotes">Ver lotes</a>
+            <button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#modal-finca" (click)="abrirEditar(f)">Editar</button>
+            <button type="button" class="btn btn-outline-dark btn-sm" [disabled]="servicio.seleccionadaId() === f.id" (click)="servicio.seleccionar(f.id)">Usar esta finca</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<div class="modal fade" id="modal-finca" tabindex="-1" aria-labelledby="titulo-finca" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formulario="ngForm" (ngSubmit)="guardar()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-finca">{{ editandoId ? 'Editar finca' : 'Nueva finca' }}</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div>
+          <label class="form-label" for="finca-nombre">Nombre</label>
+          <input id="finca-nombre" name="nombre" class="form-control" required [(ngModel)]="nombre" />
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="finca-municipio">Municipio</label>
+            <input id="finca-municipio" name="municipio" class="form-control" required [(ngModel)]="municipio" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="finca-departamento">Departamento</label>
+            <input id="finca-departamento" name="departamento" class="form-control" required [(ngModel)]="departamento" />
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="finca-area">Hectáreas</label>
+            <input id="finca-area" name="area" type="number" min="0.1" step="0.1" class="form-control" required [(ngModel)]="areaHa" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="finca-responsable">Responsable</label>
+            <input id="finca-responsable" name="responsable" class="form-control" required [(ngModel)]="responsable" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formulario.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
