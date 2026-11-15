@@ -1,2 +1,17 @@
 .aviso-lote { background: var(--agro-warn-soft); }
+.aviso-lote .bi { color: var(--agro-warn); }
 .fila-alerta:last-child { border-bottom: 0 !important; }
+.margen-bajo { background: var(--agro-bad); }
+
+.icono-alerta {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  font-size: 1.05rem;
+}
+.icono-alerta.p-urgente { background: var(--agro-bad-soft); color: var(--agro-bad); }
+.icono-alerta.p-aviso { background: var(--agro-warn-soft); color: var(--agro-warn); }
+.icono-alerta.p-info { background: var(--agro-leaf-soft); color: var(--agro-green); }
