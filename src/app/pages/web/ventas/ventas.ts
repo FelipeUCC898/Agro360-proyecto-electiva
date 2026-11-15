@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EstadoFactura, Factura } from '../../../core/models/venta';
+import { ClienteService } from '../../../core/services/cliente.service';
 import { FincaService } from '../../../core/services/finca.service';
 import { VentaService } from '../../../core/services/venta.service';
 import { BarChart, GrupoGrafico, SerieGrafico } from '../../../shared/bar-chart/bar-chart';
@@ -18,7 +19,7 @@ export class Ventas {
   private readonly servicio = inject(VentaService);
 
   readonly finca = inject(FincaService);
-  readonly clientes = this.servicio.clientes;
+  readonly clientes = inject(ClienteService).nombres;
   readonly despacho = this.servicio.despacho;
   readonly millones = millones;
   readonly pesos = pesos;
@@ -34,7 +35,7 @@ export class Ventas {
   // Cartera pendiente de cada cliente, en millones
   readonly serieCartera: SerieGrafico[] = [{ nombre: 'Por cobrar', color: '#2f6f8f' }];
   readonly gruposCartera = computed<GrupoGrafico[]>(() =>
-    this.clientes.map((cliente) => ({
+    this.clientes().filter((cliente) => this.sumaCliente(cliente) > 0).map((cliente) => ({
       etiqueta: cliente,
       valores: [Number((this.sumaCliente(cliente) / 1000000).toFixed(1))]
     }))
