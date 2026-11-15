@@ -1,5 +1,5 @@
 .movil-fondo {
-  background: var(--agro-soft);
+  background: radial-gradient(circle at 20% 0%, #dcebd0 0%, #f1f5ee 55%);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -11,9 +11,10 @@
   width: 390px;
   max-width: 100%;
   height: 780px;
-  background: #fff;
+  background: #f1f5ee;
   border: 3px solid var(--agro-ink);
-  border-radius: 30px;
+  border-radius: 34px;
+  box-shadow: 0 30px 60px -28px rgba(18, 33, 26, 0.6);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -22,15 +23,17 @@
 .movil-cuerpo {
   flex: 1;
   overflow-y: auto;
-  padding: 0 24px 16px;
+  padding: 0 20px 18px;
 }
 
 .movil-tabs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--agro-line);
-  padding: 8px 14px 10px;
   gap: 4px;
+  padding: 8px 12px 12px;
+  background: #fff;
+  border-top: 1px solid var(--agro-line);
+  box-shadow: 0 -10px 20px -16px rgba(18, 33, 26, 0.4);
 }
 
 .tab {
@@ -38,17 +41,42 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 6px 0;
-  border-radius: 10px;
+  padding: 4px 0;
   font-size: 0.66rem;
-  color: var(--agro-ink);
+  color: var(--agro-muted);
   text-decoration: none;
 }
-.tab .bi { font-size: 1.2rem; }
-.tab.activo { background: var(--agro-leaf-soft); color: var(--agro-green); font-weight: 700; }
-.tab.deshabilitado { color: var(--agro-muted); opacity: 0.6; }
+.tab-icono {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 28px;
+  border-radius: 14px;
+  font-size: 1.15rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.tab.activo { color: var(--agro-green); font-weight: 700; }
+.tab.activo .tab-icono { background: var(--agro-leaf-soft); }
+.tab.deshabilitado { opacity: 0.55; }
+
+.insignia {
+  position: absolute;
+  top: -3px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--agro-bad);
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
 
 @media (max-width: 575.98px) {
-  .movil-fondo { padding: 0; align-items: stretch; }
-  .movil-marco { height: 100vh; border: 0; border-radius: 0; width: 100%; }
+  .movil-fondo { padding: 0; align-items: stretch; background: #f1f5ee; }
+  .movil-marco { height: 100vh; border: 0; border-radius: 0; box-shadow: none; width: 100%; }
 }

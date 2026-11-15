@@ -1,1 +1,16 @@
-.alerta.destacada { background: var(--agro-soft); }
+.alerta.destacada { border-color: var(--agro-bad); background: #fff7f5; }
+.icono {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  background: var(--agro-leaf-soft);
+  color: var(--agro-green);
+}
+.t-plaga .icono { background: var(--agro-bad-soft); color: var(--agro-bad); }
+.t-clima .icono, .t-bodega .icono { background: var(--agro-warn-soft); color: var(--agro-warn); }
+
+.clima-movil { background: linear-gradient(135deg, #2c5f2d 0%, #2f6f8f 100%); box-shadow: 0 14px 24px -18px rgba(18, 33, 26, 0.7); }

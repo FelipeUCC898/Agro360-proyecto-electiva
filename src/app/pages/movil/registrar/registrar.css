@@ -1,15 +1,36 @@
 .tile-accion {
+  --c: var(--agro-green);
+  --c-suave: var(--agro-leaf-soft);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   height: 118px;
   border: 1px solid var(--agro-line);
-  border-radius: 14px;
+  border-radius: 18px;
   background: #fff;
   color: var(--agro-ink);
+  box-shadow: 0 10px 22px -18px rgba(18, 33, 26, 0.5);
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
-.tile-accion.activa { background: var(--agro-leaf-soft); border-color: var(--agro-leaf); color: var(--agro-green); }
+.tile-accion:not(:disabled):active { transform: scale(0.97); }
+.tile-accion .icono {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--c-suave);
+  color: var(--c);
+  font-size: 1.4rem;
+}
+.tile-accion.activa { background: var(--c-suave); border-color: var(--c); color: var(--c); }
+.tile-accion.activa .icono { background: var(--c); color: #fff; }
 .tile-accion:disabled { color: var(--agro-muted); opacity: 0.6; }
 .proximamente { font-size: 0.62rem; }
+
+.t-riego { --c: #2f6f8f; --c-suave: #dcebf3; }
+.t-plagas { --c: #b3402f; --c-suave: #f8e3de; }
+.t-jornal { --c: #b7791f; --c-suave: #fbf1dc; }
+.t-maquinaria { --c: #5c6b5e; --c-suave: #e6ebe4; }
