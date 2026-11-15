@@ -1,0 +1,19 @@
+<div class="movil-fondo">
+  <div class="movil-marco">
+    <div class="movil-cuerpo">
+      <router-outlet />
+    </div>
+    <nav class="movil-tabs">
+      @for (p of pestanas; track p.ruta) {
+        <a class="tab" [routerLink]="p.ruta" [class.activo]="activaRuta(p.activas)">
+          <i class="bi" [class]="p.icono"></i>
+          <span>{{ p.etiqueta }}</span>
+        </a>
+      }
+      <span class="tab deshabilitado" aria-disabled="true" title="Próximamente">
+        <i class="bi bi-person"></i>
+        <span>Perfil</span>
+      </span>
+    </nav>
+  </div>
+</div>

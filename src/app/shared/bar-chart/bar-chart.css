@@ -1,0 +1,19 @@
+.grafico-area {
+  position: relative;
+  display: flex;
+  padding-left: 34px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--agro-ink);
+  background-image: repeating-linear-gradient(to top, var(--agro-line) 0, var(--agro-line) 1px, transparent 1px, transparent 25%);
+}
+.eje { position: absolute; left: 0; top: 0; bottom: 0; width: 30px; }
+.marca { position: absolute; right: 4px; transform: translateY(50%); font-size: 0.68rem; color: var(--agro-muted); }
+.grupos { flex: 1; display: flex; justify-content: space-around; align-items: flex-end; height: 100%; border-left: 1px solid var(--agro-ink); }
+.grupo { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+.barras { display: flex; align-items: flex-end; gap: 4px; height: 100%; }
+.barra { position: relative; width: 34px; border-radius: 3px 3px 0 0; }
+.valor { position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 0.68rem; font-weight: 600; white-space: nowrap; }
+.etiqueta { position: absolute; bottom: -22px; font-size: 0.78rem; white-space: nowrap; }
+.leyenda { display: flex; gap: 14px; justify-content: center; font-size: 0.72rem; color: var(--agro-muted); flex-wrap: wrap; }
+.leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; }
+@media (max-width: 575.98px) { .barra { width: 20px; } }

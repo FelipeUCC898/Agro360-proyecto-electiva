@@ -1,0 +1,9 @@
+<div class="card h-100">
+  <div class="card-body py-3 px-3">
+    <div class="small text-secondary">{{ etiqueta() }}</div>
+    <div class="kpi-valor">{{ valor() }}</div>
+    @if (nota()) {
+      <div class="small text-secondary mt-1">{{ nota() }}</div>
+    }
+  </div>
+</div>
