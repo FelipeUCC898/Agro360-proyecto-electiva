@@ -35,7 +35,8 @@ export const MENU: MenuGrupo[] = [
     titulo: 'Comercial y financiero',
     items: [
       { etiqueta: 'Ventas', ruta: '/ventas' },
-      { etiqueta: 'Clientes', ruta: '/clientes' }
+      { etiqueta: 'Clientes', ruta: '/clientes' },
+      { etiqueta: 'Finanzas', ruta: '/finanzas' }
     ]
   },
   {
@@ -50,6 +51,4 @@ export const MENU: MenuGrupo[] = [
 ];
 
 // Módulos que todavía no tienen pantalla: quedan recogidos en "Más módulos"
-export const MENU_PROXIMAMENTE: MenuItem[] = [
-  { etiqueta: 'Finanzas' }
-];
+export const MENU_PROXIMAMENTE: MenuItem[] = [];

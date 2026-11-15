@@ -21,6 +21,7 @@ export const routes: Routes = [
       { path: 'plagas', title: 'Plagas · Agro360', loadComponent: () => import('./pages/web/plagas/plagas').then((m) => m.Plagas) },
       { path: 'inventario', title: 'Inventario · Agro360', loadComponent: () => import('./pages/web/inventario/inventario').then((m) => m.Inventario) },
       { path: 'ventas', title: 'Ventas · Agro360', loadComponent: () => import('./pages/web/ventas/ventas').then((m) => m.Ventas) },
+      { path: 'finanzas', title: 'Finanzas · Agro360', loadComponent: () => import('./pages/web/finanzas/finanzas').then((m) => m.Finanzas) },
       { path: 'clientes', title: 'Clientes · Agro360', loadComponent: () => import('./pages/web/clientes/clientes').then((m) => m.Clientes) },
       { path: 'alertas', title: 'Alertas · Agro360', loadComponent: () => import('./pages/web/alertas/alertas').then((m) => m.Alertas) },
       { path: 'reportes', title: 'Reportes · Agro360', loadComponent: () => import('./pages/web/reportes/reportes').then((m) => m.Reportes) },
