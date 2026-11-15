@@ -1,0 +1,79 @@
+<app-page-header titulo="Mapas" [subtitulo]="finca.nombre + ' · ' + finca.hectareas + ' ha'" />
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+          <h2 class="card-title mb-0">Plano de la finca</h2>
+          <div class="btn-group" role="group" aria-label="Capa del mapa">
+            @for (c of capas; track c.id) {
+              <input type="radio" class="btn-check" name="capa-mapa" [id]="'capa-' + c.id" [checked]="capa() === c.id" (change)="capa.set(c.id)" />
+              <label class="btn btn-outline-dark btn-sm" [for]="'capa-' + c.id">{{ c.etiqueta }}</label>
+            }
+          </div>
+        </div>
+
+        <svg class="plano" viewBox="0 0 400 300" role="img" aria-label="Plano esquemático de la finca con sus tres lotes">
+          <polygon class="contorno" [attr.points]="contorno" />
+          @for (p of poligonos(); track p.lote.id) {
+            <polygon class="lote" [class.elegido]="seleccion() === p.lote.id" [attr.points]="p.puntos" [attr.fill]="p.color"
+              tabindex="0" role="button" [attr.aria-label]="p.lote.nombre + ', ' + p.lote.cultivo"
+              (click)="elegir(p.lote.id)" (keydown.enter)="elegir(p.lote.id)" />
+            <text class="nombre" [attr.x]="p.centro.x" [attr.y]="p.centro.y - 4" text-anchor="middle">{{ p.lote.nombre }}</text>
+            <text class="detalle" [attr.x]="p.centro.x" [attr.y]="p.centro.y + 14" text-anchor="middle">{{ p.lote.cultivo.split(' ')[0] }} · {{ p.lote.areaHa }} ha</text>
+          }
+          @for (m of marcadores; track m.titulo) {
+            <g class="marcador">
+              <circle [attr.cx]="m.x" [attr.cy]="m.y" r="9" />
+              <text [attr.x]="m.x" [attr.y]="m.y + 4" text-anchor="middle">!</text>
+              <title>{{ m.titulo }}</title>
+            </g>
+          }
+        </svg>
+
+        <div class="d-flex flex-wrap gap-3 small text-secondary mt-2">
+          @for (l of leyenda(); track l.texto) {
+            <span><i class="muestra" [style.background]="l.color"></i>{{ l.texto }}</span>
+          }
+          <span><i class="muestra alerta-punto"></i>Alerta</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 d-grid gap-3 align-content-start">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Detalle del lote</h2>
+        @if (elegido(); as l) {
+          <div class="h4 fw-bold mb-0">{{ l.nombre }}</div>
+          <div class="text-secondary mb-3">{{ l.cultivo }} · {{ l.areaHa }} ha</div>
+          <div class="row g-2 mb-3">
+            <div class="col-6"><div class="small text-secondary">Margen</div><div class="h5 fw-bold mb-0">{{ l.margen }} %</div></div>
+            <div class="col-6"><div class="small text-secondary">Costo por kg</div><div class="h5 fw-bold mb-0">{{ pesos(l.costoKg) }}</div></div>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary btn-sm" [routerLink]="['/lotes', l.id, 'costos']">Ver costos</a>
+            <a class="btn btn-outline-dark btn-sm" routerLink="/movil/labor">Registrar labor</a>
+          </div>
+        } @else {
+          <div class="text-secondary">Selecciona un lote en el plano.</div>
+        }
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Alertas en el plano</h2>
+        @for (m of marcadores; track m.titulo) {
+          <div class="d-flex gap-3 py-2 align-items-center">
+            <i class="bi fs-5" [class]="iconos[m.tipo]"></i>
+            <span>{{ m.titulo }}</span>
+          </div>
+        }
+        <div class="small text-secondary mt-2">Lluvia mañana: {{ lluviaManana }} %</div>
+      </div>
+    </div>
+  </div>
+</div>
