@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CosechaService } from '../../../core/services/cosecha.service';
 import { MovilService } from '../../../core/services/movil.service';
 import { kg, pesos } from '../../../shared/formato';
 import { MovilHeader } from '../../../shared/movil-header/movil-header';
@@ -13,6 +14,7 @@ import { FilaResumen, MovilResumen } from '../../../shared/movil-resumen/movil-r
 })
 export class MovilCosecha {
   private readonly datos = inject(MovilService);
+  private readonly cosechas = inject(CosechaService);
 
   readonly pendientes = this.datos.pendientes;
   readonly kgPorSaco = this.datos.cosecha.kgPorSaco;
@@ -42,6 +44,18 @@ export class MovilCosecha {
 
   guardar(): void {
     this.datos.pendientes.update((n) => n + 1);
+    // La cosecha también queda en el módulo de Cosechas
+    this.cosechas.agregar({
+      fecha: this.cosechas.hoy(),
+      loteId: 'a',
+      calidad: this.calidad === 'Segunda' ? 'Segunda' : 'Primera',
+      sacos: this.sacos,
+      kg: this.totalKg,
+      mermaKg: this.mermaKg || 0,
+      motivoMerma: this.motivo || undefined,
+      destino: this.destino,
+      responsable: 'Mario R.'
+    });
     this.guardado.set(true);
   }
 }
