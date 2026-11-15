@@ -22,7 +22,7 @@ export class MovilService {
     { id: 'fertilizacion', etiqueta: 'Fertilización', icono: 'bi-flower1', ruta: '/movil/labor' },
     { id: 'plagas', etiqueta: 'Plagas', icono: 'bi-bug', ruta: '/movil/plagas' },
     { id: 'jornal', etiqueta: 'Jornal', icono: 'bi-person', ruta: '/movil/jornal' },
-    { id: 'maquinaria', etiqueta: 'Maquinaria', icono: 'bi-truck' },
+    { id: 'maquinaria', etiqueta: 'Maquinaria', icono: 'bi-truck', ruta: '/movil/maquinaria' },
     { id: 'cosecha', etiqueta: 'Cosecha', icono: 'bi-basket', ruta: '/movil/cosecha' }
   ];
 
