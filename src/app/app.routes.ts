@@ -15,6 +15,7 @@ export const routes: Routes = [
       { path: 'cultivos', title: 'Cultivos · Agro360', loadComponent: () => import('./pages/web/cultivos/cultivos').then((m) => m.Cultivos) },
       { path: 'cosechas', title: 'Cosechas · Agro360', loadComponent: () => import('./pages/web/cosechas/cosechas').then((m) => m.Cosechas) },
       { path: 'fertilizacion', title: 'Fertilización · Agro360', loadComponent: () => import('./pages/web/fertilizacion/fertilizacion').then((m) => m.Fertilizacion) },
+      { path: 'plagas', title: 'Plagas · Agro360', loadComponent: () => import('./pages/web/plagas/plagas').then((m) => m.Plagas) },
       { path: 'inventario', title: 'Inventario · Agro360', loadComponent: () => import('./pages/web/inventario/inventario').then((m) => m.Inventario) },
       { path: 'ventas', title: 'Ventas · Agro360', loadComponent: () => import('./pages/web/ventas/ventas').then((m) => m.Ventas) },
       { path: 'clientes', title: 'Clientes · Agro360', loadComponent: () => import('./pages/web/clientes/clientes').then((m) => m.Clientes) },
@@ -31,6 +32,7 @@ export const routes: Routes = [
       { path: 'registrar', title: 'Registrar · Agro360', loadComponent: () => import('./pages/movil/registrar/registrar').then((m) => m.MovilRegistrar) },
       { path: 'labor', title: 'Labor · Agro360', loadComponent: () => import('./pages/movil/labor/labor').then((m) => m.MovilLabor) },
       { path: 'cosecha', title: 'Cosecha · Agro360', loadComponent: () => import('./pages/movil/cosecha/cosecha').then((m) => m.MovilCosecha) },
+      { path: 'plagas', title: 'Reportar plaga · Agro360', loadComponent: () => import('./pages/movil/plagas/plagas').then((m) => m.MovilPlagas) },
       { path: 'alertas', title: 'Alertas · Agro360', loadComponent: () => import('./pages/movil/alertas/alertas').then((m) => m.MovilAlertas) },
       { path: 'lotes', title: 'Mis lotes · Agro360', loadComponent: () => import('./pages/movil/lotes/lotes').then((m) => m.MovilLotes) }
     ]
