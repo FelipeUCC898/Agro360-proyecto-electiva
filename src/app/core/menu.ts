@@ -16,6 +16,7 @@ export const MENU: MenuGrupo[] = [
     items: [
       { etiqueta: 'Fincas', ruta: '/fincas' },
       { etiqueta: 'Lotes', ruta: '/lotes' },
+      { etiqueta: 'Cultivos', ruta: '/cultivos' },
       { etiqueta: 'Cosechas', ruta: '/cosechas' }
     ]
   },
@@ -44,7 +45,6 @@ export const MENU: MenuGrupo[] = [
 
 // Módulos que todavía no tienen pantalla: quedan recogidos en "Más módulos"
 export const MENU_PROXIMAMENTE: MenuItem[] = [
-  { etiqueta: 'Cultivos' },
   { etiqueta: 'Riego' },
   { etiqueta: 'Fertilización' },
   { etiqueta: 'Plagas' },
