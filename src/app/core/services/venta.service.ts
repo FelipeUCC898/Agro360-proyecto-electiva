@@ -3,8 +3,6 @@ import { Despacho, Factura } from '../models/venta';
 
 @Injectable({ providedIn: 'root' })
 export class VentaService {
-  readonly clientes = ['Plaza Mayorista', 'Rest. El Roble'];
-
   readonly despacho: Despacho = { cosechadoKg: 30000, despachadoKg: 28800, mermaKg: 1200, saldoKg: 0 };
 
   private readonly facturas: Factura[] = [

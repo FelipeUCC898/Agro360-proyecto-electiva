@@ -76,7 +76,7 @@
           <label class="form-label" for="venta-cliente">Cliente</label>
           <select id="venta-cliente" name="cliente" class="form-select" required [(ngModel)]="clienteNuevo">
             <option [ngValue]="null" disabled>Selecciona un cliente</option>
-            @for (c of clientes; track c) {
+            @for (c of clientes(); track c) {
               <option [ngValue]="c">{{ c }}</option>
             }
           </select>
