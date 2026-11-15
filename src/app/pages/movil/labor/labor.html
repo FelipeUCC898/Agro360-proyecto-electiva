@@ -1,0 +1,52 @@
+<app-movil-header titulo="Aplicación de abono" subtitulo="Lote A · Fertilización" />
+
+<form class="d-grid gap-3" #formulario="ngForm" (ngSubmit)="guardar()">
+  <div>
+    <label class="form-label small text-secondary mb-1" for="labor-producto">Producto</label>
+    <select id="labor-producto" name="producto" class="form-select" [(ngModel)]="producto">
+      @for (p of productos; track p) {
+        <option [value]="p">{{ p }}</option>
+      }
+    </select>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="labor-bultos">Cantidad</label>
+    <div class="input-group">
+      <input id="labor-bultos" name="bultos" type="number" min="1" class="form-control" required [(ngModel)]="bultos" />
+      <span class="input-group-text">bultos × {{ kgPorBulto }} kg</span>
+    </div>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="labor-area">Área</label>
+    <div class="input-group">
+      <input id="labor-area" name="area" type="number" min="0.1" step="0.1" class="form-control" required [(ngModel)]="areaHa" />
+      <span class="input-group-text">ha</span>
+    </div>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="labor-trabajadores">Trabajadores</label>
+    <input id="labor-trabajadores" name="trabajadores" class="form-control" required [(ngModel)]="trabajadores" />
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="labor-horas">Equipo</label>
+    <div class="input-group">
+      <span class="input-group-text">Tractor</span>
+      <input id="labor-horas" name="horas" type="number" min="0" class="form-control" required [(ngModel)]="horas" />
+      <span class="input-group-text">h</span>
+    </div>
+  </div>
+
+  <app-movil-resumen titulo="Al guardar se actualiza solo" [filas]="resumen" />
+
+  <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary py-2" [disabled]="formulario.invalid">Guardar labor</button>
+    <input #foto type="file" accept="image/*" class="d-none" (change)="elegirFoto($event)" />
+    <button type="button" class="btn btn-outline-dark" (click)="foto.click()">
+      <i class="bi bi-camera"></i> {{ fotoNombre() || 'Agregar foto' }}
+    </button>
+  </div>
+</form>
