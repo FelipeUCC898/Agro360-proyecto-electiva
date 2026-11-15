@@ -1,0 +1,46 @@
+<app-movil-header titulo="Reportar plaga" subtitulo="Lote A · Plagas" />
+
+<form class="d-grid gap-3" #formulario="ngForm" (ngSubmit)="enviar()">
+  <div>
+    <label class="form-label small text-secondary mb-1" for="mpl-nombre">Plaga o enfermedad</label>
+    <select id="mpl-nombre" name="nombre" class="form-select" [(ngModel)]="nombre">
+      @for (n of nombres; track n) {
+        <option [value]="n">{{ n }}</option>
+      }
+    </select>
+  </div>
+
+  <div>
+    <div class="form-label small text-secondary mb-1" id="mpl-severidad">Severidad</div>
+    <div class="btn-group w-100" role="group" aria-labelledby="mpl-severidad">
+      @for (s of severidades; track s) {
+        <input type="radio" class="btn-check" name="severidad" [id]="'mpl-sev-' + s" [value]="s" [(ngModel)]="severidad" />
+        <label class="btn btn-outline-dark" [class]="'btn btn-outline-dark sev-' + s" [for]="'mpl-sev-' + s">{{ s }}</label>
+      }
+    </div>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="mpl-sector">Sector</label>
+    <select id="mpl-sector" name="sector" class="form-select" [(ngModel)]="sector">
+      @for (s of sectores; track s) {
+        <option [value]="s">{{ s }}</option>
+      }
+    </select>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="mpl-observacion">Observación</label>
+    <textarea id="mpl-observacion" name="observacion" class="form-control" rows="2" [(ngModel)]="observacion"></textarea>
+  </div>
+
+  <app-movil-resumen titulo="Al enviar se actualiza solo" [filas]="resumen" />
+
+  <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary py-2">Enviar reporte</button>
+    <input #foto type="file" accept="image/*" class="d-none" (change)="elegirFoto($event)" />
+    <button type="button" class="btn btn-outline-dark" (click)="foto.click()">
+      <i class="bi bi-camera"></i> {{ fotoNombre() || 'Agregar foto' }}
+    </button>
+  </div>
+</form>

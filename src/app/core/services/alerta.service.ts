@@ -14,4 +14,10 @@ export class AlertaService {
   listar(): Alerta[] {
     return this.alertas;
   }
+
+  // La alerta nueva queda de primera en la lista
+  agregar(alerta: Omit<Alerta, 'id'>): void {
+    const id = Math.max(0, ...this.alertas.map((a) => a.id)) + 1;
+    this.alertas.unshift({ ...alerta, id });
+  }
 }

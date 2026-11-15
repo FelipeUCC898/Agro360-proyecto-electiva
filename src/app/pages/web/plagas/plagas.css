@@ -1,0 +1,2 @@
+.fila { cursor: pointer; }
+.fila.elegida > td { background: var(--agro-leaf-soft); }
