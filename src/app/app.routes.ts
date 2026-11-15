@@ -9,6 +9,7 @@ export const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'tablero' },
       { path: 'tablero', title: 'Tablero · Agro360', loadComponent: () => import('./pages/web/tablero/tablero').then((m) => m.Tablero) },
+      { path: 'fincas', title: 'Fincas · Agro360', loadComponent: () => import('./pages/web/fincas/fincas').then((m) => m.Fincas) },
       { path: 'lotes', title: 'Lotes · Agro360', loadComponent: () => import('./pages/web/lotes/lotes').then((m) => m.Lotes) },
       { path: 'lotes/:id/costos', title: 'Costo del lote · Agro360', loadComponent: () => import('./pages/web/costo-lote/costo-lote').then((m) => m.CostoLote) },
       { path: 'inventario', title: 'Inventario · Agro360', loadComponent: () => import('./pages/web/inventario/inventario').then((m) => m.Inventario) },
