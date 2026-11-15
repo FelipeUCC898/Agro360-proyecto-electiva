@@ -20,7 +20,7 @@ export class MovilService {
   readonly acciones: AccionRegistro[] = [
     { id: 'riego', etiqueta: 'Riego', icono: 'bi-droplet' },
     { id: 'fertilizacion', etiqueta: 'Fertilización', icono: 'bi-flower1', ruta: '/movil/labor' },
-    { id: 'plagas', etiqueta: 'Plagas', icono: 'bi-bug' },
+    { id: 'plagas', etiqueta: 'Plagas', icono: 'bi-bug', ruta: '/movil/plagas' },
     { id: 'jornal', etiqueta: 'Jornal', icono: 'bi-person' },
     { id: 'maquinaria', etiqueta: 'Maquinaria', icono: 'bi-truck' },
     { id: 'cosecha', etiqueta: 'Cosecha', icono: 'bi-basket', ruta: '/movil/cosecha' }
