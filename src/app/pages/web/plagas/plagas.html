@@ -1,0 +1,155 @@
+<app-page-header titulo="Plagas" [subtitulo]="finca.nombre">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-incidencia">
+    <i class="bi bi-plus-lg"></i> Reportar incidencia
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Focos activos" [valor]="activas().length.toString()" icono="bi-bug" tono="rojo" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Lotes afectados" [valor]="lotesAfectados().toString()" icono="bi-grid-3x3-gap" tono="ambar" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Aplicaciones de control" [valor]="aplicaciones().toString()" icono="bi-droplet-half" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costo fitosanitario" [valor]="millones(costoFitosanitario)" icono="bi-receipt" tono="verde" /></div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body pb-0"><h2 class="card-title">Incidencias</h2></div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Lote</th>
+          <th>Plaga o enfermedad</th>
+          <th>Sector</th>
+          <th>Severidad</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (i of incidencias(); track i.id) {
+          <tr class="fila" [class.elegida]="seleccionada() === i.id" (click)="elegir(i)">
+            <td>{{ i.fecha }}</td>
+            <td class="fw-semibold">{{ nombreLote(i.loteId) }}</td>
+            <td>{{ i.nombre }} <span class="text-secondary small">· {{ i.tipo }}</span></td>
+            <td>{{ i.sector }}</td>
+            <td><app-status-pill [texto]="i.severidad" [tono]="tonoSeveridad(i.severidad)" /></td>
+            <td><app-status-pill [texto]="i.estado" [tono]="tonoEstado(i.estado)" /></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (detalle(); as d) {
+  <div class="card">
+    <div class="card-body">
+      <h2 class="card-title mb-3">Tratamiento · {{ d.nombre }} en {{ nombreLote(d.loteId) }}</h2>
+      @if (d.tratamiento) {
+        <div class="row g-3 mb-3">
+          <div class="col-4"><div class="small text-secondary">Producto</div><div class="fw-bold">{{ d.tratamiento.producto }}</div></div>
+          <div class="col-4"><div class="small text-secondary">Dosis</div><div class="fw-bold">{{ d.tratamiento.dosis }}</div></div>
+          <div class="col-4"><div class="small text-secondary">Fecha</div><div class="fw-bold">{{ d.tratamiento.fecha }}</div></div>
+        </div>
+      } @else {
+        <div class="text-secondary mb-3">Sin tratamiento todavía.</div>
+      }
+      @if (mensajeError) {
+        <div class="alert alert-danger py-2" role="alert">{{ mensajeError }}</div>
+      }
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-tratamiento">Registrar tratamiento</button>
+        <button type="button" class="btn btn-outline-dark btn-sm" [disabled]="d.estado === 'Resuelta'" (click)="resolver(d)">Marcar como resuelta</button>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="text-secondary small">Haz clic en una incidencia para ver su tratamiento.</div>
+}
+
+<div class="modal fade" id="modal-incidencia" tabindex="-1" aria-labelledby="titulo-incidencia" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formulario="ngForm" (ngSubmit)="reportar()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-incidencia">Reportar incidencia</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="inc-lote">Lote</label>
+            <select id="inc-lote" name="lote" class="form-select" [(ngModel)]="loteNuevo">
+              @for (l of lotes; track l.id) {
+                <option [value]="l.id">{{ l.nombre }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="inc-sector">Sector</label>
+            <select id="inc-sector" name="sector" class="form-select" [(ngModel)]="sectorNuevo">
+              @for (s of sectores; track s) {
+                <option [value]="s">{{ s }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="inc-nombre">Plaga o enfermedad</label>
+          <select id="inc-nombre" name="nombre" class="form-select" [(ngModel)]="nombreNuevo">
+            @for (n of nombres; track n) {
+              <option [value]="n">{{ n }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="inc-severidad">Severidad</label>
+          <select id="inc-severidad" name="severidad" class="form-select" [(ngModel)]="severidadNueva">
+            @for (s of severidades; track s) {
+              <option [value]="s">{{ s }}</option>
+            }
+          </select>
+          <div class="form-text">Una incidencia de severidad Alta crea una alerta urgente.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-tratamiento" tabindex="-1" aria-labelledby="titulo-tratamiento" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formTrat="ngForm" (ngSubmit)="tratar()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-tratamiento">Registrar tratamiento</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div>
+          <label class="form-label" for="trat-producto">Producto</label>
+          <select id="trat-producto" name="producto" class="form-select" [(ngModel)]="productoTrat">
+            @for (p of fitosanitarios; track p.id) {
+              <option [ngValue]="p.id">{{ p.nombre }}</option>
+            }
+          </select>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="trat-dosis">Dosis (L)</label>
+            <input id="trat-dosis" name="dosis" type="number" min="1" class="form-control" required [(ngModel)]="dosisTrat" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="trat-fecha">Fecha</label>
+            <input id="trat-fecha" name="fecha" class="form-control" required [(ngModel)]="fechaTrat" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formTrat.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
