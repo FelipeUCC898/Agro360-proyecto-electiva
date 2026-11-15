@@ -1,0 +1,67 @@
+<app-page-header titulo="Clima" [subtitulo]="finca.nombre + ' · Hoy'" />
+
+<div class="card tarjeta-hoy mb-3">
+  <div class="card-body d-flex flex-wrap align-items-center gap-4">
+    <i class="bi bi-cloud-sun display-1"></i>
+    <div>
+      <div class="display-5 fw-bold">{{ clima.maxima }}° / {{ clima.minima }}°</div>
+      <div class="opacity-75">{{ clima.estado }} · Humedad {{ clima.humedad }} %</div>
+    </div>
+    <div class="ms-md-auto text-md-end">
+      <div class="opacity-75 small">Lluvia mañana</div>
+      <div class="h2 fw-bold mb-0">{{ clima.lluviaManana() }} %</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Temperatura de hoy" [valor]="clima.maxima + '°'" icono="bi-thermometer-half" tono="ambar" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Lluvia mañana" [valor]="clima.lluviaManana() + ' %'" icono="bi-cloud-rain" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Lluvia del mes" [valor]="clima.lluviaMesActual() + ' mm'" icono="bi-moisture" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Humedad relativa" [valor]="clima.humedad + ' %'" icono="bi-droplet-half" tono="verde" /></div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h2 class="card-title mb-3">Pronóstico de 7 días</h2>
+    <div class="row g-2">
+      @for (d of pronostico; track d.dia) {
+        <div class="col-6 col-md-3 col-xl">
+          <div class="dia text-center p-3 rounded-3 h-100" [class.dia-lluvia]="d.lluvia >= 60">
+            <div class="fw-semibold">{{ d.dia }}</div>
+            <i class="bi fs-2 d-block my-1" [class]="iconos[d.estado ?? 'Nublado']"></i>
+            <div class="fw-bold">{{ d.maxima }}° <span class="text-secondary fw-normal">{{ d.minima }}°</span></div>
+            <div class="small text-secondary">lluvia {{ d.lluvia }} %</div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Lluvia por mes <span class="text-secondary fw-normal">milímetros</span></h2>
+        <app-bar-chart [series]="serie" [grupos]="grupos" [maximo]="120" [alto]="200" />
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Recomendaciones</h2>
+        @for (r of recomendaciones; track r.texto) {
+          <div class="d-flex gap-3 py-3 border-bottom recomendacion">
+            <span class="icono-rec"><i class="bi" [class]="r.icono"></i></span>
+            <div>
+              <div>{{ r.texto }}</div>
+              <app-status-pill [texto]="r.modulo" [tono]="r.tono" />
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
