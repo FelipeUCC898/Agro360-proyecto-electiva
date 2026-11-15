@@ -1,0 +1,3 @@
+.aviso-clima { background: #dcebf3; color: var(--agro-ink); }
+.aviso-clima .bi { color: var(--agro-water); }
+td app-status-pill + app-status-pill { margin-left: 6px; }

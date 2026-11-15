@@ -26,4 +26,20 @@ export class InventarioService {
   listarMovimientos(): string[] {
     return this.movimientos;
   }
+
+  buscarPorNombre(nombre: string): Producto | undefined {
+    return this.productos.find((p) => p.nombre === nombre);
+  }
+
+  // Descuenta la existencia y deja el movimiento; devuelve false si no alcanza
+  registrarSalida(productoId: number, cantidad: number, detalle: string): boolean {
+    const producto = this.productos.find((p) => p.id === productoId);
+    if (!producto || cantidad <= 0 || producto.existencia < cantidad) {
+      return false;
+    }
+    producto.existencia -= cantidad;
+    const fecha = new Date().toLocaleDateString('es-CO', { day: '2-digit', month: 'short' }).replace('.', '');
+    this.movimientos.unshift(fecha + ' · Salida · ' + producto.nombre + ' −' + cantidad + ' ' + producto.unidad + ' · ' + detalle);
+    return true;
+  }
 }
