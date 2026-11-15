@@ -38,6 +38,7 @@ export const MENU: MenuGrupo[] = [
   {
     titulo: 'Inteligencia',
     items: [
+      { etiqueta: 'Mapas', ruta: '/mapas' },
       { etiqueta: 'Clima', ruta: '/clima' },
       { etiqueta: 'Alertas', ruta: '/alertas' },
       { etiqueta: 'Reportes', ruta: '/reportes' }
@@ -50,6 +51,5 @@ export const MENU_PROXIMAMENTE: MenuItem[] = [
   { etiqueta: 'Riego' },
   { etiqueta: 'Trabajadores' },
   { etiqueta: 'Maquinaria' },
-  { etiqueta: 'Finanzas' },
-  { etiqueta: 'Mapas' }
+  { etiqueta: 'Finanzas' }
 ];
