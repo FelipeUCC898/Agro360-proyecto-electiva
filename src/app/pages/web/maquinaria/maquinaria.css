@@ -1,0 +1,4 @@
+.fila:last-child { border-bottom: 0 !important; }
+.urgente { color: var(--agro-warn); }
+.aviso { background: var(--agro-warn-soft); }
+.aviso .bi { color: var(--agro-warn); }
