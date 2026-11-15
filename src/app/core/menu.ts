@@ -11,12 +11,28 @@ export interface MenuGrupo {
 // Módulos con pantalla: van siempre visibles en el menú
 export const MENU: MenuGrupo[] = [
   { items: [{ etiqueta: 'Tablero', ruta: '/tablero' }] },
-  { titulo: 'Producción', items: [{ etiqueta: 'Lotes', ruta: '/lotes' }] },
-  { titulo: 'Recursos y operación', items: [{ etiqueta: 'Inventario', ruta: '/inventario' }] },
-  { titulo: 'Comercial y financiero', items: [{ etiqueta: 'Ventas', ruta: '/ventas' }] },
+  {
+    titulo: 'Producción',
+    items: [
+      { etiqueta: 'Lotes', ruta: '/lotes' }
+    ]
+  },
+  {
+    titulo: 'Recursos y operación',
+    items: [
+      { etiqueta: 'Inventario', ruta: '/inventario' }
+    ]
+  },
+  {
+    titulo: 'Comercial y financiero',
+    items: [
+      { etiqueta: 'Ventas', ruta: '/ventas' }
+    ]
+  },
   {
     titulo: 'Inteligencia',
     items: [
+      { etiqueta: 'Clima', ruta: '/clima' },
       { etiqueta: 'Alertas', ruta: '/alertas' },
       { etiqueta: 'Reportes', ruta: '/reportes' }
     ]
@@ -35,6 +51,5 @@ export const MENU_PROXIMAMENTE: MenuItem[] = [
   { etiqueta: 'Maquinaria' },
   { etiqueta: 'Clientes' },
   { etiqueta: 'Finanzas' },
-  { etiqueta: 'Mapas' },
-  { etiqueta: 'Clima' }
+  { etiqueta: 'Mapas' }
 ];

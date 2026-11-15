@@ -14,7 +14,8 @@ export const routes: Routes = [
       { path: 'inventario', title: 'Inventario · Agro360', loadComponent: () => import('./pages/web/inventario/inventario').then((m) => m.Inventario) },
       { path: 'ventas', title: 'Ventas · Agro360', loadComponent: () => import('./pages/web/ventas/ventas').then((m) => m.Ventas) },
       { path: 'alertas', title: 'Alertas · Agro360', loadComponent: () => import('./pages/web/alertas/alertas').then((m) => m.Alertas) },
-      { path: 'reportes', title: 'Reportes · Agro360', loadComponent: () => import('./pages/web/reportes/reportes').then((m) => m.Reportes) }
+      { path: 'reportes', title: 'Reportes · Agro360', loadComponent: () => import('./pages/web/reportes/reportes').then((m) => m.Reportes) },
+      { path: 'clima', title: 'Clima · Agro360', loadComponent: () => import('./pages/web/clima/clima').then((m) => m.Clima) }
     ]
   },
   {
