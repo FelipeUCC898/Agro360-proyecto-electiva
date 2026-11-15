@@ -1,0 +1,83 @@
+<app-page-header titulo="Inventario" subtitulo="Bodega de insumos">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-movimiento" (click)="tipoMovimiento = 'Entrada'">
+    <i class="bi bi-plus-lg"></i> Entrada
+  </button>
+  <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#modal-movimiento" (click)="tipoMovimiento = 'Salida'">
+    <i class="bi bi-dash-lg"></i> Salida
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Productos" [valor]="resumen.productos.toString()" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Valor en bodega" [valor]="millones(resumen.valorBodega)" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Por vencer" [valor]="resumen.porVencer.toString()" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Bajo mínimo" [valor]="resumen.bajoMinimo.toString()" /></div>
+</div>
+
+<div class="card mb-3">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Tipo</th>
+          <th>Existencia</th>
+          <th>Mínimo</th>
+          <th>Vence</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of productos(); track p.id) {
+          <tr>
+            <td class="fw-semibold">{{ p.nombre }}</td>
+            <td>{{ p.tipo }}</td>
+            <td>{{ cantidadTexto(p.existencia, p.unidad) }}</td>
+            <td>{{ p.minimo ? cantidadTexto(p.minimo, p.unidad) : '—' }}</td>
+            <td>{{ vence(p) }}</td>
+            <td><app-status-pill [texto]="estado(p).texto" [tono]="estado(p).tono" /></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title mb-3">Movimientos recientes</h2>
+    @for (m of movimientos(); track $index) {
+      <div class="py-2">{{ m }}</div>
+    }
+  </div>
+</div>
+
+<div class="modal fade" id="modal-movimiento" tabindex="-1" aria-labelledby="titulo-movimiento" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formulario="ngForm" (ngSubmit)="guardarMovimiento()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-movimiento">{{ tipoMovimiento }} de producto</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div>
+          <label class="form-label" for="mov-producto">Producto</label>
+          <select id="mov-producto" name="producto" class="form-select" required [(ngModel)]="idProducto">
+            <option [ngValue]="null" disabled>Selecciona un producto</option>
+            @for (p of productos(); track p.id) {
+              <option [ngValue]="p.id">{{ p.nombre }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="mov-cantidad">Cantidad</label>
+          <input id="mov-cantidad" name="cantidad" type="number" min="1" class="form-control" required [(ngModel)]="cantidad" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formulario.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
