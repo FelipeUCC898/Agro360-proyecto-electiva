@@ -1,34 +1,58 @@
 <div class="app-shell">
   <aside class="sidebar">
     <div class="d-flex align-items-center justify-content-between">
-      <div class="brand">AGRO<span>360</span></div>
-      <button class="btn btn-sm btn-outline-dark d-lg-none" type="button" data-bs-toggle="collapse"
+      <div class="brand">
+        <span class="logo"><i class="bi bi-flower2"></i></span>
+        <span>AGRO<span class="num">360</span></span>
+      </div>
+      <button class="btn btn-sm btn-outline-light d-lg-none" type="button" data-bs-toggle="collapse"
         data-bs-target="#menu-lateral" aria-controls="menu-lateral" aria-label="Abrir menú">
         <i class="bi bi-list"></i>
       </button>
     </div>
 
-    <nav id="menu-lateral" class="collapse d-lg-block">
+    <nav id="menu-lateral" class="collapse d-lg-flex flex-column menu">
       @for (grupo of menu; track $index) {
         @if (grupo.titulo) {
           <div class="grupo">{{ grupo.titulo }}</div>
         }
         @for (item of grupo.items; track item.etiqueta) {
-          @if (item.ruta) {
-            <a class="nav-link-agro" [routerLink]="item.ruta" routerLinkActive="activo">{{ item.etiqueta }}</a>
-          } @else {
-            <span class="nav-link-agro deshabilitado" aria-disabled="true">
-              {{ item.etiqueta }}
-              <small class="proximamente">Próximamente</small>
-            </span>
-          }
+          <a class="nav-link-agro" [routerLink]="item.ruta" routerLinkActive="activo">{{ item.etiqueta }}</a>
         }
       }
+
+      <button class="mas-modulos" type="button" data-bs-toggle="collapse" data-bs-target="#mas-modulos"
+        aria-expanded="false" aria-controls="mas-modulos">
+        <i class="bi bi-grid"></i>
+        <span>Más módulos</span>
+        <span class="contador">{{ proximamente.length }}</span>
+        <i class="bi bi-chevron-down ms-auto"></i>
+      </button>
+      <div id="mas-modulos" class="collapse">
+        @for (item of proximamente; track item.etiqueta) {
+          <span class="nav-link-agro deshabilitado" aria-disabled="true">
+            {{ item.etiqueta }}
+            <small class="proximamente">Próximamente</small>
+          </span>
+        }
+      </div>
+
+      <div class="finca-chip">
+        <i class="bi bi-geo-alt-fill"></i>
+        <div>
+          <div class="fw-semibold">{{ finca.nombre }}</div>
+          <div class="ciclo">Ciclo {{ finca.ciclo }} · {{ finca.hectareas }} ha</div>
+        </div>
+      </div>
     </nav>
   </aside>
 
   <main class="contenido">
-    <span class="chip-usuario"><i class="bi bi-person"></i> Dueño <i class="bi bi-chevron-down"></i></span>
+    <span class="chip-usuario">
+      <span class="avatar"><i class="bi bi-person-fill"></i></span>
+      Dueño
+      <i class="bi bi-chevron-down"></i>
+    </span>
     <router-outlet />
   </main>
 </div>
