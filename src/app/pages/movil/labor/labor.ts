@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { FertilizacionService } from '../../../core/services/fertilizacion.service';
 import { MovilService } from '../../../core/services/movil.service';
 import { kg, pesos } from '../../../shared/formato';
 import { MovilHeader } from '../../../shared/movil-header/movil-header';
@@ -14,6 +15,7 @@ import { FilaResumen, MovilResumen } from '../../../shared/movil-resumen/movil-r
 export class MovilLabor {
   private readonly router = inject(Router);
   private readonly datos = inject(MovilService);
+  private readonly fertilizacion = inject(FertilizacionService);
 
   readonly productos = this.datos.productos;
   readonly kgPorBulto = this.datos.kgPorBulto;
@@ -53,6 +55,8 @@ export class MovilLabor {
   }
 
   guardar(): void {
+    // La aplicación queda en el plan de fertilización y descuenta el inventario
+    this.fertilizacion.registrarAplicacion('a', this.producto, this.bultos * this.kgPorBulto, this.areaHa);
     this.router.navigateByUrl('/movil/registrar');
   }
 }
