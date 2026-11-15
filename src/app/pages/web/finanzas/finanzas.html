@@ -1,0 +1,143 @@
+<app-page-header titulo="Finanzas" [subtitulo]="'Ciclo ' + finca.ciclo">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-movimiento">
+    <i class="bi bi-plus-lg"></i> Registrar movimiento
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Ingresos" [valor]="millones(ingresos())" icono="bi-cash-stack" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Gastos" [valor]="millones(gastos())" icono="bi-receipt" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Utilidad" [valor]="millones(utilidad())" [nota]="'Margen ' + margen() + ' %'" icono="bi-graph-up-arrow" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Por cobrar" [valor]="millones(porCobrar)" icono="bi-clock-history" tono="ambar" /></div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-7">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Ingresos y gastos por mes <span class="text-secondary fw-normal">millones de pesos</span></h2>
+        <app-bar-chart [series]="serie" [grupos]="grupos()" [maximo]="40" [alto]="220" />
+        <div class="small text-secondary mt-1">Incluye ingresos proyectados de los lotes B y C. Solo el Lote A tiene facturas registradas.</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Gastos por categoría</h2>
+        @for (c of categorias(); track c.nombre) {
+          <div class="mb-2">
+            <div class="d-flex justify-content-between small">
+              <span>{{ c.nombre }}</span>
+              <span class="text-secondary">{{ millones(c.valor) }} · <strong class="text-body">{{ porcentaje(c.valor).toFixed(0) }} %</strong></span>
+            </div>
+            <div class="progress mt-1" role="progressbar" [attr.aria-valuenow]="porcentaje(c.valor)" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" [style.width.%]="porcentaje(c.valor)"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-2 pb-0">
+    <h2 class="card-title mb-0">Movimientos</h2>
+    <select id="fin-filtro" class="form-select filtro" aria-label="Filtrar por tipo" [ngModel]="filtro()" (ngModelChange)="filtro.set($event)">
+      <option value="todos">Ingresos y gastos</option>
+      <option value="Ingreso">Solo ingresos</option>
+      <option value="Gasto">Solo gastos</option>
+    </select>
+  </div>
+  <div class="table-responsive mt-2">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Categoría</th>
+          <th>Lote</th>
+          <th>Descripción</th>
+          <th class="text-end">Monto</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (m of filas(); track m.id) {
+          <tr>
+            <td>{{ m.fecha }}</td>
+            <td><app-status-pill [texto]="m.tipo" [tono]="m.tipo === 'Ingreso' ? 'ok' : 'peligro'" /></td>
+            <td>{{ m.categoria }}</td>
+            <td>{{ nombreLote(m.loteId) }}</td>
+            <td>{{ m.descripcion }}</td>
+            <td class="text-end fw-semibold" [class.ingreso]="m.tipo === 'Ingreso'" [class.gasto]="m.tipo === 'Gasto'">{{ m.tipo === 'Ingreso' ? '+' : '−' }}{{ pesos(m.monto) }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-movimiento" tabindex="-1" aria-labelledby="titulo-movimiento" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formulario="ngForm" (ngSubmit)="guardar()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-movimiento">Registrar movimiento</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="mov-tipo">Tipo</label>
+            <select id="mov-tipo" name="tipo" class="form-select" [(ngModel)]="tipo" (ngModelChange)="cambiarTipo()">
+              <option>Ingreso</option>
+              <option>Gasto</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="mov-categoria">Categoría</label>
+            <select id="mov-categoria" name="categoria" class="form-select" [(ngModel)]="categoria">
+              @for (c of categoriasDelTipo(); track c) {
+                <option [value]="c">{{ c }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-4">
+            <label class="form-label" for="mov-lote">Lote</label>
+            <select id="mov-lote" name="lote" class="form-select" [(ngModel)]="loteNuevo">
+              @for (l of lotes; track l.id) {
+                <option [value]="l.id">{{ l.nombre }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-4">
+            <label class="form-label" for="mov-mes">Mes</label>
+            <select id="mov-mes" name="mes" class="form-select" [(ngModel)]="mes">
+              @for (m of meses; track m) {
+                <option [value]="m">{{ m }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-4">
+            <label class="form-label" for="mov-dia">Día</label>
+            <input id="mov-dia" name="dia" type="number" min="1" max="31" class="form-control" required [(ngModel)]="dia" />
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="mov-monto">Monto</label>
+          <input id="mov-monto" name="monto" type="number" min="1" class="form-control" required [(ngModel)]="monto" />
+        </div>
+        <div>
+          <label class="form-label" for="mov-descripcion">Descripción</label>
+          <input id="mov-descripcion" name="descripcion" class="form-control" required [(ngModel)]="descripcion" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formulario.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

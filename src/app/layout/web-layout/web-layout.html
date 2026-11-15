@@ -21,21 +21,24 @@
         }
       }
 
-      <button class="mas-modulos" type="button" data-bs-toggle="collapse" data-bs-target="#mas-modulos"
-        aria-expanded="false" aria-controls="mas-modulos">
-        <i class="bi bi-grid"></i>
-        <span>Más módulos</span>
-        <span class="contador">{{ proximamente.length }}</span>
-        <i class="bi bi-chevron-down ms-auto"></i>
-      </button>
-      <div id="mas-modulos" class="collapse">
-        @for (item of proximamente; track item.etiqueta) {
-          <span class="nav-link-agro deshabilitado" aria-disabled="true">
-            {{ item.etiqueta }}
-            <small class="proximamente">Próximamente</small>
-          </span>
-        }
-      </div>
+      <!-- Solo aparece mientras queden módulos sin pantalla -->
+      @if (proximamente.length) {
+        <button class="mas-modulos" type="button" data-bs-toggle="collapse" data-bs-target="#mas-modulos"
+          aria-expanded="false" aria-controls="mas-modulos">
+          <i class="bi bi-grid"></i>
+          <span>Más módulos</span>
+          <span class="contador">{{ proximamente.length }}</span>
+          <i class="bi bi-chevron-down ms-auto"></i>
+        </button>
+        <div id="mas-modulos" class="collapse">
+          @for (item of proximamente; track item.etiqueta) {
+            <span class="nav-link-agro deshabilitado" aria-disabled="true">
+              {{ item.etiqueta }}
+              <small class="proximamente">Próximamente</small>
+            </span>
+          }
+        </div>
+      }
 
       <div class="finca-chip">
         <i class="bi bi-geo-alt-fill"></i>
