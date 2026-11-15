@@ -1,0 +1,12 @@
+.icono {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--agro-leaf-soft);
+  color: var(--agro-green);
+  font-size: 1.1rem;
+}
+.icono.azul { background: #dcebf3; color: var(--agro-water); }
