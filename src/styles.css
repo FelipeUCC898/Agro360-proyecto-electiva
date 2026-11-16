@@ -30,7 +30,8 @@ h1, h2, h3, h4, h5, h6, .font-display {
 body { background: #f1f5ee; }
 
 /* La pantalla entra suavemente al cambiar de ruta */
-.contenido > router-outlet + * { display: block; animation: entrar 0.35s ease both; }
+/* Sin "both": al terminar, la pantalla no queda como capa propia y los formularios emergentes quedan por encima del fondo oscuro */
+.contenido > router-outlet + * { display: block; animation: entrar 0.35s ease; }
 @keyframes entrar { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .contenido > router-outlet + * { animation: none; } }
 
