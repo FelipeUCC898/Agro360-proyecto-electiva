@@ -1,0 +1,36 @@
+<app-movil-header titulo="Registrar jornal" subtitulo="Lote A · Jornal" />
+
+<form class="d-grid gap-3" #formulario="ngForm" (ngSubmit)="guardar()">
+  <div>
+    <div class="form-label small text-secondary mb-1" id="mjo-trabajadores">Trabajadores</div>
+    <div class="d-grid gap-2" role="group" aria-labelledby="mjo-trabajadores">
+      @for (t of personal(); track t.id) {
+        <div class="form-check border rounded-3 py-2 ps-5 pe-3">
+          <input class="form-check-input" type="checkbox" [id]="'mjo-t-' + t.id" [checked]="elegidos().includes(t.id)" (change)="alternar(t.id)" />
+          <label class="form-check-label w-100" [for]="'mjo-t-' + t.id">
+            <span class="fw-semibold">{{ t.nombre }}</span>
+            <span class="text-secondary small"> · {{ t.cargo }}</span>
+          </label>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="mjo-tarea">Tarea</label>
+    <select id="mjo-tarea" name="tarea" class="form-select" [(ngModel)]="tarea">
+      @for (t of tareas; track t) {
+        <option [value]="t">{{ t }}</option>
+      }
+    </select>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="mjo-fecha">Fecha</label>
+    <input id="mjo-fecha" class="form-control" value="Hoy" readonly />
+  </div>
+
+  <app-movil-resumen titulo="Al guardar se actualiza solo" [filas]="resumen" />
+
+  <button type="submit" class="btn btn-primary py-2" [disabled]="jornales() === 0">Guardar jornal</button>
+</form>

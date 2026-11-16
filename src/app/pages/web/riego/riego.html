@@ -1,0 +1,152 @@
+<app-page-header titulo="Riego" [subtitulo]="'Ciclo ' + finca.ciclo">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-riego">
+    <i class="bi bi-plus-lg"></i> Registrar riego
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Riegos del mes" [valor]="registros().length.toString()" icono="bi-droplet" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Horas de riego" [valor]="horas() + ' h'" icono="bi-clock" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Agua usada" [valor]="agua() + ' m³'" icono="bi-moisture" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Ahorro estimado" [valor]="ahorroAgua + ' %'" icono="bi-piggy-bank" tono="ambar" /></div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-7">
+    <div class="card h-100">
+      <div class="card-body pb-0"><h2 class="card-title">Programación</h2></div>
+      <div class="table-responsive">
+        <table class="table mb-0 align-middle">
+          <thead>
+            <tr>
+              <th>Lote</th>
+              <th>Método</th>
+              <th>Frecuencia</th>
+              <th>Próximo riego</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of programa; track p.loteId) {
+              <tr>
+                <td class="fw-semibold">{{ nombreLote(p.loteId) }}</td>
+                <td>{{ p.metodo }}</td>
+                <td>{{ p.frecuencia }}</td>
+                <td>{{ p.proximo }}</td>
+                <td><app-status-pill [texto]="p.estado" [tono]="tono(p)" /></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Recomendaciones</h2>
+        @if (lluviaManana >= 60) {
+          <div class="d-flex gap-3 py-2 border-bottom">
+            <span class="icono azul"><i class="bi bi-cloud-rain"></i></span>
+            <div>Omitir el riego de mañana en los lotes programados: lluvia esperada del {{ lluviaManana }} %.</div>
+          </div>
+        } @else {
+          <div class="d-flex gap-3 py-2 border-bottom">
+            <span class="icono"><i class="bi bi-droplet"></i></span>
+            <div>Seguir el plan de riego: no se espera lluvia fuerte.</div>
+          </div>
+        }
+        <div class="d-flex gap-3 py-2">
+          <span class="icono"><i class="bi bi-moisture"></i></span>
+          <div>Omitir el riego del Lote B: humedad suficiente.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body pb-0"><h2 class="card-title">Riegos registrados</h2></div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Lote</th>
+          <th>Método</th>
+          <th class="text-end">Horas</th>
+          <th class="text-end">Agua</th>
+          <th class="text-end">Costo</th>
+          <th>Responsable</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of registros(); track r.id) {
+          <tr>
+            <td>{{ r.fecha }}</td>
+            <td class="fw-semibold">{{ nombreLote(r.loteId) }}</td>
+            <td>{{ r.metodo }}@if (r.observacion) { <div class="small text-secondary">{{ r.observacion }}</div> }</td>
+            <td class="text-end">{{ r.horas }}</td>
+            <td class="text-end">{{ r.aguaM3 }} m³</td>
+            <td class="text-end">{{ pesos(r.costo) }}</td>
+            <td>{{ r.responsable }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-riego" tabindex="-1" aria-labelledby="titulo-riego" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formulario="ngForm" (ngSubmit)="guardar()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-riego">Registrar riego</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="rie-lote">Lote</label>
+            <select id="rie-lote" name="lote" class="form-select" [(ngModel)]="loteNuevo">
+              @for (l of lotes; track l.id) {
+                <option [value]="l.id">{{ l.nombre }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="rie-fecha">Fecha</label>
+            <input id="rie-fecha" name="fecha" class="form-control" required [(ngModel)]="fecha" />
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="rie-metodo">Método</label>
+            <select id="rie-metodo" name="metodo" class="form-select" [(ngModel)]="metodo">
+              @for (m of metodos; track m) {
+                <option [value]="m">{{ m }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="rie-horas">Horas</label>
+            <input id="rie-horas" name="horas" type="number" min="0.5" step="0.5" class="form-control" required [(ngModel)]="horasNuevas" />
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="rie-responsable">Responsable</label>
+          <input id="rie-responsable" name="responsable" class="form-control" required [(ngModel)]="responsable" />
+        </div>
+        <div>
+          <label class="form-label" for="rie-observacion">Observación</label>
+          <input id="rie-observacion" name="observacion" class="form-control" [(ngModel)]="observacion" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formulario.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

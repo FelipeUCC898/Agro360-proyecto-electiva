@@ -1,0 +1,151 @@
+<app-page-header titulo="Maquinaria" [subtitulo]="finca.nombre">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-equipo">
+    <i class="bi bi-plus-lg"></i> Nuevo equipo
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Equipos" [valor]="equipos().length.toString()" icono="bi-truck" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Horas de uso del mes" [valor]="numero(horasMes()) + ' h'" icono="bi-clock-history" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Combustible consumido" [valor]="numero(combustible()) + ' gal'" icono="bi-fuel-pump" tono="ambar" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costo por hora promedio" [valor]="pesos(costoPromedio())" icono="bi-cash-coin" tono="verde" /></div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body pb-0"><h2 class="card-title">Equipos</h2></div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Equipo</th>
+          <th>Tipo</th>
+          <th class="text-end">Horas de uso</th>
+          <th class="text-end">Mantenimiento en</th>
+          <th class="text-end">Consumo (gal/h)</th>
+          <th class="text-end">Costo por hora</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (e of equipos(); track e.id) {
+          <tr>
+            <td class="fw-semibold">{{ e.nombre }}</td>
+            <td>{{ e.tipo }}</td>
+            <td class="text-end">{{ numero(e.horasUso) }}</td>
+            <td class="text-end">{{ numero(e.horasParaMantenimiento) }} h</td>
+            <td class="text-end">{{ numero(e.consumoGalH) }}</td>
+            <td class="text-end">{{ pesos(e.costoHora) }}</td>
+            <td><app-status-pill [texto]="estado(e).texto" [tono]="estado(e).tono" /></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Mantenimientos próximos</h2>
+        @for (e of mantenimientos(); track e.id) {
+          <div class="d-flex justify-content-between align-items-center py-2 border-bottom fila">
+            <span>{{ e.nombre }}</span>
+            <span class="fw-bold" [class.urgente]="e.horasParaMantenimiento <= 20">en {{ numero(e.horasParaMantenimiento) }} h</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title mb-3">Costo de los equipos</h2>
+        @if (masCostoso(); as e) {
+          <div class="aviso rounded-3 p-3 d-flex gap-3">
+            <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+            <div>
+              <div class="fw-bold">{{ e.nombre }} cuesta {{ pesos(e.costoHora) }} por hora</div>
+              <div class="small">Es {{ veces() }} veces el costo por hora promedio de la finca. Revisa si conviene reducir sus horas de uso o programar su mantenimiento.</div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body pb-0"><h2 class="card-title">Uso reciente</h2></div>
+  <div class="table-responsive">
+    <table class="table mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Equipo</th>
+          <th>Lote</th>
+          <th class="text-end">Horas</th>
+          <th class="text-end">Combustible</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of usos(); track u.id) {
+          <tr>
+            <td>{{ u.fecha }}</td>
+            <td class="fw-semibold">{{ nombreEquipo(u.equipoId) }}</td>
+            <td>{{ nombreLote(u.loteId) }}</td>
+            <td class="text-end">{{ numero(u.horas) }} h</td>
+            <td class="text-end">{{ numero(u.galones) }} gal</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-equipo" tabindex="-1" aria-labelledby="titulo-equipo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formulario="ngForm" (ngSubmit)="guardar()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-equipo">Nuevo equipo</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="equ-nombre">Nombre</label>
+            <input id="equ-nombre" name="nombre" class="form-control" required [(ngModel)]="nombre" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="equ-tipo">Tipo</label>
+            <input id="equ-tipo" name="tipo" class="form-control" required [(ngModel)]="tipo" />
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="equ-uso">Horas de uso</label>
+            <input id="equ-uso" name="uso" type="number" min="0" class="form-control" [(ngModel)]="horasUso" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="equ-mant">Horas hasta el mantenimiento</label>
+            <input id="equ-mant" name="mant" type="number" min="1" class="form-control" required [(ngModel)]="horasMant" />
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="equ-consumo">Consumo (gal/h)</label>
+            <input id="equ-consumo" name="consumo" type="number" min="0.1" step="0.1" class="form-control" required [(ngModel)]="consumo" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="equ-costo">Costo por hora</label>
+            <input id="equ-costo" name="costo" type="number" min="1" class="form-control" required [(ngModel)]="costoHora" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formulario.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

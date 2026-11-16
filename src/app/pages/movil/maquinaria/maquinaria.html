@@ -1,0 +1,32 @@
+<app-movil-header titulo="Registrar uso de equipo" subtitulo="Lote A · Maquinaria" />
+
+<form class="d-grid gap-3" #formulario="ngForm" (ngSubmit)="guardar()">
+  <div>
+    <label class="form-label small text-secondary mb-1" for="mma-equipo">Equipo</label>
+    <select id="mma-equipo" name="equipo" class="form-select" [(ngModel)]="equipoId">
+      @for (e of equipos(); track e.id) {
+        <option [ngValue]="e.id">{{ e.nombre }}</option>
+      }
+    </select>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="mma-horas">Horas de uso</label>
+    <div class="input-group">
+      <input id="mma-horas" name="horas" type="number" min="0.5" step="0.5" class="form-control" required [(ngModel)]="horas" />
+      <span class="input-group-text">h</span>
+    </div>
+  </div>
+
+  <div>
+    <label class="form-label small text-secondary mb-1" for="mma-galones">Combustible</label>
+    <div class="input-group">
+      <input id="mma-galones" name="galones" type="number" min="0" step="0.1" class="form-control" [placeholder]="'Estimado: ' + galonesUsados" [(ngModel)]="galones" />
+      <span class="input-group-text">gal</span>
+    </div>
+  </div>
+
+  <app-movil-resumen titulo="Al guardar se actualiza solo" [filas]="resumen" />
+
+  <button type="submit" class="btn btn-primary py-2" [disabled]="formulario.invalid">Guardar uso</button>
+</form>

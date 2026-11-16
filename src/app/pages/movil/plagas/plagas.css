@@ -1,0 +1,3 @@
+.btn-check:checked + .sev-Baja { background: #2e7d32; border-color: #2e7d32; color: #fff; }
+.btn-check:checked + .sev-Media { background: var(--agro-warn); border-color: var(--agro-warn); color: #fff; }
+.btn-check:checked + .sev-Alta { background: var(--agro-bad); border-color: var(--agro-bad); color: #fff; }

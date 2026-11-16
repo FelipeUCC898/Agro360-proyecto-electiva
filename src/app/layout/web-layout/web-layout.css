@@ -1,0 +1,201 @@
+.app-shell {
+  display: grid;
+  grid-template-columns: 224px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+/* Columna del menú: sin espacio en pantallas pequeñas y fija en grandes */
+.columna-menu { display: contents; }
+
+.sidebar {
+  --bs-offcanvas-width: 280px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #cfe0cb;
+  background: linear-gradient(180deg, #12211a 0%, #173321 100%);
+}
+
+.sidebar .offcanvas-header {
+  padding: 14px 16px 4px;
+}
+
+.cuerpo-menu {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 12px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.menu { flex: 1; }
+
+/* Barra superior con el botón de hamburguesa */
+.barra-movil {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #12211a 0%, #173321 100%);
+  box-shadow: 0 8px 18px -12px rgba(18, 33, 26, 0.7);
+}
+.barra-movil .brand { padding: 0; }
+.btn-hamburguesa {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 10px;
+  background: transparent;
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.btn-hamburguesa:hover { background: rgba(255, 255, 255, 0.08); }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Bricolage Grotesque', 'Segoe UI', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #fff;
+  padding: 2px 6px 14px;
+}
+.brand .num { color: var(--agro-leaf); }
+.logo {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--agro-leaf);
+  color: #12211a;
+  font-size: 1.1rem;
+}
+
+.grupo {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7f9a85;
+  padding: 16px 10px 4px;
+}
+
+.nav-link-agro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: #cfe0cb;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+a.nav-link-agro:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.nav-link-agro.activo {
+  background: rgba(151, 188, 98, 0.2);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--agro-leaf);
+}
+.nav-link-agro.deshabilitado { color: #7f9a85; cursor: default; }
+.proximamente { font-size: 0.58rem; color: #7f9a85; opacity: 0.9; }
+
+.mas-modulos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 18px;
+  padding: 8px 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  background: transparent;
+  color: #cfe0cb;
+  font-size: 0.82rem;
+}
+.mas-modulos:hover { background: rgba(255, 255, 255, 0.06); }
+.mas-modulos .contador {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(151, 188, 98, 0.25);
+  color: var(--agro-leaf);
+}
+.mas-modulos[aria-expanded='true'] .bi-chevron-down { transform: rotate(180deg); }
+#mas-modulos { padding-top: 6px; }
+
+.finca-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 0.8rem;
+  color: #fff;
+}
+.finca-chip .bi { color: var(--agro-leaf); font-size: 1.1rem; }
+.finca-chip .ciclo { font-size: 0.68rem; color: #9fb7a4; }
+nav .finca-chip { margin-top: 18px; }
+
+.contenido {
+  position: relative;
+  padding: 20px 30px 36px;
+  min-width: 0;
+}
+
+.chip-usuario {
+  position: absolute;
+  top: 18px;
+  right: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--agro-line);
+  border-radius: 999px;
+  padding: 4px 12px 4px 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #fff;
+  box-shadow: 0 6px 16px -10px rgba(18, 33, 26, 0.4);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--agro-green);
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+@media (min-width: 992px) {
+  .columna-menu {
+    display: block;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .app-shell { grid-template-columns: minmax(0, 1fr); }
+  .contenido { padding: 16px; }
+  .chip-usuario { display: none; }
+}

@@ -1,0 +1,106 @@
+<app-page-header titulo="Trabajadores" [subtitulo]="finca.nombre">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-trabajador">
+    <i class="bi bi-plus-lg"></i> Nuevo trabajador
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Trabajadores activos" [valor]="activos().toString()" icono="bi-people" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Jornales del mes" [valor]="jornales().toString()" icono="bi-calendar-check" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Mano de obra del mes" [valor]="millones(costo())" icono="bi-cash-coin" tono="ambar" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Valor de jornal promedio" [valor]="pesos(promedio())" icono="bi-tag" tono="verde" /></div>
+</div>
+
+<div class="card mb-3">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Cargo</th>
+          <th>Contrato</th>
+          <th class="text-end">Valor jornal</th>
+          <th class="text-end">Jornales del mes</th>
+          <th>Lote</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (t of personal(); track t.id) {
+          <tr>
+            <td class="fw-semibold">{{ t.nombre }}</td>
+            <td>{{ t.cargo }}</td>
+            <td>{{ t.contrato }}</td>
+            <td class="text-end">{{ pesos(t.valorJornal) }}</td>
+            <td class="text-end">{{ t.jornalesMes }}</td>
+            <td>{{ nombreLote(t.loteId) }}</td>
+            <td><app-status-pill [texto]="t.estado" [tono]="t.estado === 'Activo' ? 'ok' : 'neutro'" /></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title mb-3">Jornales por lote</h2>
+    @for (p of porLote(); track p.lote) {
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <span class="etiqueta">{{ p.lote }}</span>
+        <div class="progress flex-grow-1" role="progressbar" [attr.aria-valuenow]="p.jornales" aria-valuemin="0" [attr.aria-valuemax]="maxLote()">
+          <div class="progress-bar" [style.width.%]="(p.jornales / maxLote()) * 100"></div>
+        </div>
+        <strong class="valor">{{ p.jornales }}</strong>
+      </div>
+    }
+  </div>
+</div>
+
+<div class="modal fade" id="modal-trabajador" tabindex="-1" aria-labelledby="titulo-trabajador" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formulario="ngForm" (ngSubmit)="guardar()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-trabajador">Nuevo trabajador</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="tra-nombre">Nombre</label>
+            <input id="tra-nombre" name="nombre" class="form-control" required [(ngModel)]="nombre" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="tra-cargo">Cargo</label>
+            <input id="tra-cargo" name="cargo" class="form-control" required [(ngModel)]="cargo" />
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="tra-contrato">Contrato</label>
+            <select id="tra-contrato" name="contrato" class="form-select" [(ngModel)]="contrato">
+              <option>Jornal</option>
+              <option>Fijo</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="tra-valor">Valor de jornal</label>
+            <input id="tra-valor" name="valor" type="number" min="1" class="form-control" required [(ngModel)]="valorJornal" />
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="tra-lote">Lote asignado</label>
+          <select id="tra-lote" name="lote" class="form-select" [(ngModel)]="loteNuevo">
+            @for (l of lotes; track l.id) {
+              <option [value]="l.id">{{ l.nombre }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formulario.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

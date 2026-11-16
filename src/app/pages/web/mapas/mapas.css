@@ -1,0 +1,11 @@
+.plano { width: 100%; height: auto; background: #eaf2e1; border-radius: 12px; }
+.contorno { fill: #f4f7f1; stroke: #5c6b5e; stroke-width: 2; stroke-dasharray: 6 4; }
+.lote { stroke: #12211a; stroke-width: 1.5; cursor: pointer; transition: filter 0.15s ease, stroke-width 0.15s ease; }
+.lote:hover { filter: brightness(1.06); }
+.lote:focus-visible, .lote.elegido { stroke-width: 3.5; outline: none; }
+.nombre { font: 700 13px 'Figtree', sans-serif; fill: #12211a; pointer-events: none; }
+.detalle { font: 11px 'Figtree', sans-serif; fill: #12211a; pointer-events: none; }
+.marcador circle { fill: #b3402f; stroke: #fff; stroke-width: 2; }
+.marcador text { font: 700 12px 'Figtree', sans-serif; fill: #fff; pointer-events: none; }
+.muestra { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; }
+.alerta-punto { background: #b3402f; border-radius: 50%; }

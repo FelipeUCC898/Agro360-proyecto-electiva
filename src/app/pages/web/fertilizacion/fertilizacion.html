@@ -1,0 +1,122 @@
+<app-page-header titulo="Fertilización" [subtitulo]="'Ciclo ' + finca.ciclo">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-aplicacion">
+    <i class="bi bi-plus-lg"></i> Programar aplicación
+  </button>
+</app-page-header>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Aplicaciones del ciclo" [valor]="aplicaciones().length.toString()" icono="bi-flower1" tono="verde" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Kg aplicados" [valor]="kg(kgAplicados())" icono="bi-bag" tono="azul" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Costo de fertilización" [valor]="millones(costoCiclo)" icono="bi-receipt" tono="ambar" /></div>
+  <div class="col-6 col-xl-3"><app-kpi-card etiqueta="Pendientes" [valor]="pendientes().toString()" icono="bi-hourglass-split" tono="rojo" /></div>
+</div>
+
+@if (lluviaManana >= 60 && pendientesPorPosponer().length) {
+  <div class="aviso-clima rounded-3 p-3 mb-3 d-flex gap-3">
+    <i class="bi bi-cloud-rain fs-4"></i>
+    <div>
+      <div class="fw-bold">Lluvia mañana: {{ lluviaManana }} %</div>
+      <div class="small">Conviene posponer {{ pendientesPorPosponer().length === 1 ? 'la aplicación pendiente' : 'las aplicaciones pendientes' }}: el abono se pierde con la lluvia fuerte.</div>
+    </div>
+  </div>
+}
+
+@if (mensajeError) {
+  <div class="alert alert-danger py-2" role="alert">{{ mensajeError }}</div>
+}
+
+<div class="card">
+  <div class="card-body pb-0"><h2 class="card-title">Plan de fertilización</h2></div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Lote</th>
+          <th>Producto</th>
+          <th class="text-end">Dosis (kg/ha)</th>
+          <th class="text-end">Área</th>
+          <th class="text-end">Total</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th class="text-end">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (a of aplicaciones(); track a.id) {
+          <tr>
+            <td class="fw-semibold">{{ nombreLote(a.loteId) }}</td>
+            <td>{{ a.producto }}</td>
+            <td class="text-end">{{ a.dosisKgHa }}</td>
+            <td class="text-end">{{ a.areaHa }} ha</td>
+            <td class="text-end">{{ kg(a.kgTotal) }}</td>
+            <td>{{ a.fecha }}</td>
+            <td>
+              <app-status-pill [texto]="a.estado" [tono]="tono(a.estado)" />
+              @if (sinStock(a)) {
+                <app-status-pill texto="Sin stock suficiente" tono="peligro" />
+              }
+            </td>
+            <td class="text-end">
+              @if (a.estado === 'Pendiente') {
+                <button type="button" class="btn btn-sm btn-primary" [disabled]="sinStock(a)" (click)="aplicar(a)">Marcar como aplicada</button>
+              } @else if (a.estado === 'Pospuesta por lluvia') {
+                <button type="button" class="btn btn-sm btn-outline-dark" (click)="reprogramar(a)">Reprogramar</button>
+              } @else {
+                <span class="text-secondary small">Descontada del inventario</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-aplicacion" tabindex="-1" aria-labelledby="titulo-aplicacion" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" #formulario="ngForm" (ngSubmit)="guardar()">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="titulo-aplicacion">Programar aplicación</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body d-grid gap-3">
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="fer-lote">Lote</label>
+            <select id="fer-lote" name="lote" class="form-select" [(ngModel)]="loteNuevo">
+              @for (l of lotes; track l.id) {
+                <option [value]="l.id">{{ l.nombre }} · {{ l.areaHa }} ha</option>
+              }
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="fer-producto">Producto</label>
+            <select id="fer-producto" name="producto" class="form-select" [(ngModel)]="productoNuevo">
+              @for (p of fertilizantes; track p.id) {
+                <option [ngValue]="p.id">{{ p.nombre }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" for="fer-dosis">Dosis (kg/ha)</label>
+            <input id="fer-dosis" name="dosis" type="number" min="1" class="form-control" required [(ngModel)]="dosis" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="fer-fecha">Fecha</label>
+            <input id="fer-fecha" name="fecha" class="form-control" required [(ngModel)]="fecha" />
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="fer-total">Total a aplicar</label>
+          <input id="fer-total" class="form-control" [value]="kg(totalNuevo())" readonly />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formulario.invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
