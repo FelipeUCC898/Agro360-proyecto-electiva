@@ -4,19 +4,61 @@
   min-height: 100vh;
 }
 
+/* Columna del menú: sin espacio en pantallas pequeñas y fija en grandes */
+.columna-menu { display: contents; }
+
 .sidebar {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
+  --bs-offcanvas-width: 280px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 18px 12px;
   color: #cfe0cb;
   background: linear-gradient(180deg, #12211a 0%, #173321 100%);
 }
 
+.sidebar .offcanvas-header {
+  padding: 14px 16px 4px;
+}
+
+.cuerpo-menu {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 12px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
 .menu { flex: 1; }
+
+/* Barra superior con el botón de hamburguesa */
+.barra-movil {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #12211a 0%, #173321 100%);
+  box-shadow: 0 8px 18px -12px rgba(18, 33, 26, 0.7);
+}
+.barra-movil .brand { padding: 0; }
+.btn-hamburguesa {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 10px;
+  background: transparent;
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.btn-hamburguesa:hover { background: rgba(255, 255, 255, 0.08); }
 
 .brand {
   display: flex;
@@ -143,9 +185,17 @@ nav .finca-chip { margin-top: 18px; }
   font-size: 0.8rem;
 }
 
+@media (min-width: 992px) {
+  .columna-menu {
+    display: block;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+}
+
 @media (max-width: 991.98px) {
   .app-shell { grid-template-columns: minmax(0, 1fr); }
-  .sidebar { position: static; height: auto; padding: 12px 14px; }
   .contenido { padding: 16px; }
   .chip-usuario { display: none; }
 }
